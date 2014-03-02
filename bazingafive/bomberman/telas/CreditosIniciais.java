@@ -30,7 +30,7 @@ public class CreditosIniciais implements Tela {
 		System.out.println ("Carregando logo...");
 
 		try {
-		    logo = ImageIO.read(new File("bazingafive/bomberman/imagens/bazinga.png"));
+		    logo = ImageIO.read(CreditosIniciais.class.getResourceAsStream("/bazingafive/bomberman/imagens/bazinga.png"));
 		} catch (IOException e) {
 			System.out.println("Não consegui carregar o logo: "+e.getMessage());
 		}

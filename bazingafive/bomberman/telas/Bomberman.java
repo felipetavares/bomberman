@@ -34,8 +34,8 @@ abstract class Objeto {
 
 	}
 
-	public void desenhar (Graphics g, int comprimento, int altura) {
-
+	public int desenhar (Graphics g, int comprimento, int altura) {
+		return 0;
 	}
 
 	public Tipo getTipo () {
@@ -45,7 +45,7 @@ abstract class Objeto {
 
 class Bomba extends Objeto {
 	private BufferedImage imagem;
-	private int tempoInicial;
+	private long tempoInicial;
 
 	public Bomba (int x, int y) {
 		super(x,y);
@@ -56,15 +56,18 @@ class Bomba extends Objeto {
 	//@override
 	public void carregar () {
 		try {
-		    imagem = ImageIO.read(new File("bazingafive/bomberman/imagens/bomba/0.png"));
+		    imagem = ImageIO.read(Bomba.class.getResourceAsStream("/bazingafive/bomberman/imagens/bomba/0.png"));
 		} catch (IOException e) {
 			System.out.println("Não consegui carregar a bomba: "+e.getMessage());
 		}
 	}
 
 	//@override
-	public void desenhar (Graphics g, int comprimento, int altura) {
+	public int desenhar (Graphics g, int comprimento, int altura) {
+		if (System.currentTimeMillis()-tempoInicial > 2000)
+			return 1;
 		g.drawImage(imagem,comprimento*x/8+10,(altura-20)*y/8,null);
+		return 0;
 	}
 
 	public Tipo getTipo () {
@@ -82,15 +85,16 @@ class Piso extends Objeto {
 	//@override
 	public void carregar () {
 		try {
-		    imagem = ImageIO.read(new File("bazingafive/bomberman/imagens/paredes/1.png"));
+		    imagem = ImageIO.read(Piso.class.getResourceAsStream("/bazingafive/bomberman/imagens/paredes/1.png"));
 		} catch (IOException e) {
 			System.out.println("Não consegui carregar o piso: "+e.getMessage());
 		}
 	}
 
 	//@override
-	public void desenhar (Graphics g, int comprimento, int altura) {
+	public int desenhar (Graphics g, int comprimento, int altura) {
 		g.drawImage(imagem,comprimento*x/8,(altura-20)*y/8,null);
+		return 0;
 	}
 
 	public Tipo getTipo () {
@@ -108,15 +112,16 @@ class Parede extends Objeto {
 	//@override
 	public void carregar () {
 		try {
-		    imagem = ImageIO.read(new File("bazingafive/bomberman/imagens/paredes/0.png"));
+		    imagem = ImageIO.read(Parede.class.getResourceAsStream("/bazingafive/bomberman/imagens/paredes/0.png"));
 		} catch (IOException e) {
 			System.out.println("Não consegui carregar a parede: "+e.getMessage());
 		}
 	}
 
 	//@override
-	public void desenhar (Graphics g, int comprimento, int altura) {
+	public int desenhar (Graphics g, int comprimento, int altura) {
 		g.drawImage(imagem,comprimento*x/8,(altura-20)*y/8,null);
+		return 0;
 	}
 
 	public Tipo getTipo () {
@@ -136,10 +141,10 @@ class Jogador extends Objeto {
 	//@override
 	public void carregar () {
 		try {
-		    imagens[0] = ImageIO.read(new File("bazingafive/bomberman/imagens/bomberman/0.png"));
-		    imagens[1] = ImageIO.read(new File("bazingafive/bomberman/imagens/bomberman/1.png"));
-		    imagens[2] = ImageIO.read(new File("bazingafive/bomberman/imagens/bomberman/2.png"));
-		    imagens[3] = ImageIO.read(new File("bazingafive/bomberman/imagens/bomberman/3.png"));
+		    imagens[0] = ImageIO.read(Jogador.class.getResourceAsStream("/bazingafive/bomberman/imagens/bomberman/0.png"));
+		    imagens[1] = ImageIO.read(Jogador.class.getResourceAsStream("/bazingafive/bomberman/imagens/bomberman/1.png"));
+		    imagens[2] = ImageIO.read(Jogador.class.getResourceAsStream("/bazingafive/bomberman/imagens/bomberman/2.png"));
+		    imagens[3] = ImageIO.read(Jogador.class.getResourceAsStream("/bazingafive/bomberman/imagens/bomberman/3.png"));
 		} catch (IOException e) {
 			System.out.println("Não consegui carregar o bomberman: "+e.getMessage());
 		}
@@ -195,8 +200,9 @@ class Jogador extends Objeto {
 	}
 
 	//@override
-	public void desenhar (Graphics g, int comprimento, int altura) {
+	public int desenhar (Graphics g, int comprimento, int altura) {
 		g.drawImage(imagens[direcao],comprimento*x/8+16,(altura-20)*y/8,null);
+		return 0;
 	}	
 
 	public Tipo getTipo () {
@@ -302,14 +308,22 @@ public class Bomberman implements Tela {
 					if (mapa.getObjetos(x,y).elementAt(z).getTipo() == Objeto.Tipo.TP_PAREDE ||
 						mapa.getObjetos(x,y).elementAt(z).getTipo() == Objeto.Tipo.TP_PISO ||
 						mapa.getObjetos(x,y).elementAt(z).getTipo() == Objeto.Tipo.TP_BOMBA) {
-						mapa.getObjetos(x,y).elementAt(z).desenhar(g,comprimento,altura);
-						mapa.getObjetos(x,y).elementAt(z).executado = false;
+						if (mapa.getObjetos(x,y).elementAt(z).desenhar(g,comprimento,altura) == 1) {
+							mapa.getObjetos(x,y).remove(z);
+							z--;
+						}
+						else
+							mapa.getObjetos(x,y).elementAt(z).executado = false;
 					}
 				}
 				for (int z=0;z<mapa.getObjetos(x,y).size();z++) {
 					if (mapa.getObjetos(x,y).elementAt(z).getTipo() == Objeto.Tipo.TP_JOGADOR) {
-						mapa.getObjetos(x,y).elementAt(z).desenhar(g,comprimento,altura);
-						mapa.getObjetos(x,y).elementAt(z).executado = false;
+						if (mapa.getObjetos(x,y).elementAt(z).desenhar(g,comprimento,altura) == 1) {
+							mapa.getObjetos(x,y).remove(z);
+							z--;
+						}
+						else
+							mapa.getObjetos(x,y).elementAt(z).executado = false;
 					}
 				}
 			}

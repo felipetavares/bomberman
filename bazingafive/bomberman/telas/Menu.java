@@ -11,6 +11,14 @@ public class Menu implements Tela {
 	private boolean primeiraVez = true;
 	private int comprimento, altura;
 
+	public int getComprimento () {
+		return comprimento;
+	}
+
+	public int getAltura () {
+		return altura;
+	}
+
 	public void setTamanho (int comprimento, int altura) {
 		this.comprimento = comprimento;
 		this.altura = altura;
@@ -71,7 +79,8 @@ public class Menu implements Tela {
 	public int getProximaTela () {
 		if (primeiraVez == true) {
 			primeiraVez = false;
-			return 1;
+			//return 1;
+			return 2;
 		} else 
 			return 2;
 	}

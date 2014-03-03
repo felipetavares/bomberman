@@ -6,6 +6,14 @@ import java.awt.event.KeyEvent;
 public class Creditos implements Tela {
 	private int comprimento, altura;
 
+	public int getComprimento () {
+		return comprimento;
+	}
+
+	public int getAltura () {
+		return altura;
+	}
+
 	public void setTamanho (int comprimento, int altura) {
 		this.comprimento = comprimento;
 		this.altura = altura;

@@ -4,6 +4,42 @@
 		"selected_items":
 		[
 			[
+				"tempo",
+				"tempoInicial"
+			],
+			[
+				"tmpo",
+				"tempoInicial"
+			],
+			[
+				"expoo",
+				"explosoes"
+			],
+			[
+				"Explo",
+				"Explosao"
+			],
+			[
+				"ma",
+				"Math"
+			],
+			[
+				"cre",
+				"creditos"
+			],
+			[
+				"credi",
+				"creditoAtual"
+			],
+			[
+				"TP_",
+				"TP_PAREDE"
+			],
+			[
+				"ge",
+				"getObjetos"
+			],
+			[
 				"ca",
 				"carregar"
 			],
@@ -51,15 +87,7 @@
 			"file": "Jogo.java",
 			"settings":
 			{
-				"buffer_size": 2535,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "telas/Bomberman.java",
-			"settings":
-			{
-				"buffer_size": 7592,
+				"buffer_size": 3317,
 				"line_ending": "Unix"
 			}
 		},
@@ -75,15 +103,7 @@
 			"file": "telas/Creditos.java",
 			"settings":
 			{
-				"buffer_size": 468,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "telas/CreditosIniciais.java",
-			"settings":
-			{
-				"buffer_size": 1670,
+				"buffer_size": 574,
 				"line_ending": "Unix"
 			}
 		},
@@ -91,7 +111,7 @@
 			"file": "telas/Instrucoes.java",
 			"settings":
 			{
-				"buffer_size": 472,
+				"buffer_size": 578,
 				"line_ending": "Unix"
 			}
 		},
@@ -99,7 +119,39 @@
 			"file": "telas/Menu.java",
 			"settings":
 			{
-				"buffer_size": 1709,
+				"buffer_size": 1830,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "telas/CreditosIniciais.java",
+			"settings":
+			{
+				"buffer_size": 3066,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "telas/Bomberman.java",
+			"settings":
+			{
+				"buffer_size": 10933,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "explosao/Explosao.java",
+			"settings":
+			{
+				"buffer_size": 928,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "explosao/Particula.java",
+			"settings":
+			{
+				"buffer_size": 1432,
 				"line_ending": "Unix"
 			}
 		},
@@ -107,7 +159,7 @@
 			"file": "telas/Tela.java",
 			"settings":
 			{
-				"buffer_size": 286,
+				"buffer_size": 341,
 				"line_ending": "Unix"
 			}
 		}
@@ -136,6 +188,7 @@
 	},
 	"file_history":
 	[
+		"/home/philips/music/MIDI/experiments/The Bard's Song.csv",
 		"/home/philips/development/bomberman/bazingafive/bomberman/telas/Bomberman.java",
 		"/home/philips/development/ccsl/samanau_sat/trunk/hallib/hallib.c",
 		"/home/philips/development/bomberman/bazingafive/bomberman/Test.java",
@@ -201,7 +254,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 90.0,
 		"where_history":
 		[
 			""
@@ -209,9 +262,29 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": false,
+		"case_sensitive": true,
 		"find_history":
 		[
+			"public Parede",
+			"TP_PAREDE",
+			"mapa.getObjetos\\(x,y\\)",
+			"getObjetos",
+			"8",
+			"64",
+			"class Jogador",
+			"Explosao",
+			"explosao",
+			"mover",
+			"\\.explode",
+			"explode",
+			".desenhar",
+			"(Mapa mapa)\\) \\{",
+			"desenhar",
+			"getcomprimento",
+			"altura",
+			"desenhar",
+			"Bomba",
+			"(public int desenhar .*)\\)",
 			"Piso",
 			"Parede",
 			"parede",
@@ -234,11 +307,17 @@
 			"jDiv"
 		],
 		"highlight": true,
-		"in_selection": true,
+		"in_selection": false,
 		"preserve_case": false,
 		"regex": true,
 		"replace_history":
 		[
+			"objetos",
+			"32",
+			"Mapa mapa, Bomberman bomberman) {",
+			"getComprimento",
+			"comprimento",
+			"$1, Mapa mapa)",
 			"Bomba",
 			"Piso",
 			"piso",
@@ -269,7 +348,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 6,
 			"sheets":
 			[
 				{
@@ -277,15 +356,15 @@
 					"file": "Jogo.java",
 					"settings":
 					{
-						"buffer_size": 2535,
+						"buffer_size": 3317,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1499,
-								1499
+								3317,
+								3317
 							]
 						],
 						"settings":
@@ -294,40 +373,13 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 705.0,
+						"translation.y": 1434.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "telas/Bomberman.java",
-					"settings":
-					{
-						"buffer_size": 7592,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								996,
-								996
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Java/Java.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 444.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
 					"file": "janela/Janela.java",
 					"settings":
 					{
@@ -353,19 +405,46 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
+					"buffer": 2,
 					"file": "telas/Creditos.java",
 					"settings":
 					{
-						"buffer_size": 468,
+						"buffer_size": 574,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								285,
-								285
+								189,
+								189
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "telas/Instrucoes.java",
+					"settings":
+					{
+						"buffer_size": 578,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								279,
+								279
 							]
 						],
 						"settings":
@@ -381,18 +460,18 @@
 				},
 				{
 					"buffer": 4,
-					"file": "telas/CreditosIniciais.java",
+					"file": "telas/Menu.java",
 					"settings":
 					{
-						"buffer_size": 1670,
+						"buffer_size": 1830,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1106,
-								1106
+								306,
+								306
 							]
 						],
 						"settings":
@@ -401,25 +480,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 159.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "telas/Instrucoes.java",
+					"file": "telas/CreditosIniciais.java",
 					"settings":
 					{
-						"buffer_size": 472,
+						"buffer_size": 3066,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								287,
-								287
+								2268,
+								2268
 							]
 						],
 						"settings":
@@ -428,25 +507,25 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1135.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 6,
-					"file": "telas/Menu.java",
+					"file": "telas/Bomberman.java",
 					"settings":
 					{
-						"buffer_size": 1709,
+						"buffer_size": 10933,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								456,
-								456
+								9824,
+								9824
 							]
 						],
 						"settings":
@@ -455,25 +534,77 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 5812.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 7,
-					"file": "telas/Tela.java",
+					"file": "explosao/Explosao.java",
 					"settings":
 					{
-						"buffer_size": 286,
+						"buffer_size": 928,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								173,
-								173
+								862,
+								862
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "explosao/Particula.java",
+					"settings":
+					{
+						"buffer_size": 1432,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1274,
+								1274
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Java/Java.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 339.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "telas/Tela.java",
+					"settings":
+					{
+						"buffer_size": 341,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								339,
+								339
 							]
 						],
 						"settings":
@@ -542,7 +673,7 @@
 		"width": 0.0
 	},
 	"show_minimap": true,
-	"show_open_files": false,
+	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
 	"side_bar_width": 150.0,

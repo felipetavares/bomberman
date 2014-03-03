@@ -15,8 +15,16 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Robot;
+import java.awt.RenderingHints;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
 
 class Jogo extends Canvas implements ActionListener,KeyListener {
+	static GraphicsDevice monitor = GraphicsEnvironment
+        .getLocalGraphicsEnvironment().getScreenDevices()[0];
+
 	// Quem está pressionado ou não
 	private boolean teclas[] = new boolean[1024];
 
@@ -46,8 +54,10 @@ class Jogo extends Canvas implements ActionListener,KeyListener {
 
 	// Construtor
 	public Jogo () {
-		comprimento = 512;
-		altura = 372;
+		comprimento = monitor.getDisplayMode().getWidth();
+		altura = monitor.getDisplayMode().getHeight();
+
+		System.out.println ("Abrindo janela ("+comprimento+","+altura+")");
 
 		telas[0] = new Menu();
 		telas[1] = new CreditosIniciais();
@@ -60,13 +70,22 @@ class Jogo extends Canvas implements ActionListener,KeyListener {
 			telas[i].setTamanho (comprimento,altura);
 
 		janela = new Janela("Bomberman - Bz5");
-		janela.setBounds(0,0,comprimento,altura+24);
+		janela.setBounds(0,0,comprimento,altura);
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		janela.add(this);
 		setIgnoreRepaint(true);
 
 		janela.setVisible(true);
+		// Coloca em full-screen
+		monitor.setFullScreenWindow(janela);
+
+		// Remove cursor
+		janela.setCursor(janela.getToolkit().createCustomCursor(
+		        new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
+		        "null"));
+
+
 
 		requestFocus();
 
@@ -106,6 +125,9 @@ class Jogo extends Canvas implements ActionListener,KeyListener {
 	public void rodar () {
 		try {
 			Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
+			g.setRenderingHint(
+			        RenderingHints.KEY_TEXT_ANTIALIASING,
+			        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 			telas[tela].desenhar(g);
 

@@ -8,4 +8,6 @@ public interface Tela {
 	public void teclaPressionada(KeyEvent e);
 	public void desenhar (Graphics g);
 	public int getProximaTela ();
+	public int getComprimento();
+	public int getAltura();
 }

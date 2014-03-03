@@ -8,9 +8,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
+import bazingafive.bomberman.explosao.Explosao;
 
 abstract class Objeto {
-	public static enum Tipo {TP_PAREDE,TP_JOGADOR,TP_PISO,TP_BOMBA};
+	public static enum Tipo {TP_PAREDE,TP_JOGADOR,TP_PISO,TP_BOMBA,TP_PAREDE_METAL};
 	public boolean executado;
 	int x,y;
 
@@ -34,7 +35,7 @@ abstract class Objeto {
 
 	}
 
-	public int desenhar (Graphics g, int comprimento, int altura) {
+	public int desenhar (Graphics g, int comprimento, int altura, Mapa mapa, Bomberman bomberman) {
 		return 0;
 	}
 
@@ -62,16 +63,60 @@ class Bomba extends Objeto {
 		}
 	}
 
+
 	//@override
-	public int desenhar (Graphics g, int comprimento, int altura) {
-		if (System.currentTimeMillis()-tempoInicial > 2000)
+	public int desenhar (Graphics g, int comprimento, int altura, Mapa mapa, Bomberman bomberman) {
+		if (System.currentTimeMillis()-tempoInicial > 2000) {
+			explode(mapa,bomberman);
 			return 1;
-		g.drawImage(imagem,comprimento*x/8+10,(altura-20)*y/8,null);
+		}
+
+		g.drawImage(imagem,x*32,y*32,null);
 		return 0;
 	}
 
 	public Tipo getTipo () {
 		return Tipo.TP_BOMBA;
+	}
+
+	// dx,dy = ponto de destino ix,iy=direção da linha
+	private void explodeLinha (Mapa mapa, Bomberman bomberman, int dx, int dy, int ix, int iy, boolean eu) {
+		// Ponto da linha
+		int lx=x,ly=y;
+
+		do {
+			if (!eu) {
+				lx += ix;
+				ly += iy;
+			}
+			if (mapa.inside(lx,ly)) {
+				bomberman.addExplosao (new Explosao(lx*32+32,ly*32+32, 50, Color.RED));
+				for (int o=0;o<mapa.getObjetos(lx,ly).size();o++) {
+					if (mapa.getObjetos(lx,ly).elementAt(o).getTipo() == Objeto.Tipo.TP_JOGADOR) {
+						Jogador j = (Jogador)mapa.getObjetos(lx,ly).elementAt(o);
+						j.mata();
+					} else
+					if (mapa.getObjetos(lx,ly).elementAt(o).getTipo() == Objeto.Tipo.TP_PAREDE) {
+						//bomberman.addExplosao (new Explosao(lx*32+32,ly*32+32,10, new Color(0xff,0xbb,0x80)));
+						mapa.getObjetos(lx,ly).remove(o);
+						o--;
+						break;
+					}
+				}
+			}
+			if (eu) {
+				lx += ix;
+				ly += iy;
+			}
+		} while (lx != dx || ly != dy);
+	}
+
+	private void explode (Mapa mapa, Bomberman bomberman) {
+		explodeLinha(mapa, bomberman, x-1, y, -1,0, false);
+		explodeLinha(mapa, bomberman, x+1, y, +1,0, false);
+		explodeLinha(mapa, bomberman, x, y-1, 0,-1, false);
+		explodeLinha(mapa, bomberman, x, y+1, 0,+1, false);
+		explodeLinha(mapa, bomberman, x, y, 0,0, true);
 	}
 }
 
@@ -92,8 +137,8 @@ class Piso extends Objeto {
 	}
 
 	//@override
-	public int desenhar (Graphics g, int comprimento, int altura) {
-		g.drawImage(imagem,comprimento*x/8,(altura-20)*y/8,null);
+	public int desenhar (Graphics g, int comprimento, int altura, Mapa mapa, Bomberman bomberman) {
+		g.drawImage(imagem,x*32,y*32,null);
 		return 0;
 	}
 
@@ -119,8 +164,8 @@ class Parede extends Objeto {
 	}
 
 	//@override
-	public int desenhar (Graphics g, int comprimento, int altura) {
-		g.drawImage(imagem,comprimento*x/8,(altura-20)*y/8,null);
+	public int desenhar (Graphics g, int comprimento, int altura, Mapa mapa, Bomberman bomberman) {
+		g.drawImage(imagem,x*32,y*32,null);
 		return 0;
 	}
 
@@ -129,8 +174,38 @@ class Parede extends Objeto {
 	}
 }
 
+class ParedeMetal extends Objeto {
+	private BufferedImage imagem;
+
+	public ParedeMetal (int x, int y) {
+		super(x,y);
+	}
+
+	//@override
+	public void carregar () {
+		try {
+		    imagem = ImageIO.read(Parede.class.getResourceAsStream("/bazingafive/bomberman/imagens/paredes/2.png"));
+		} catch (IOException e) {
+			System.out.println("Não consegui carregar a parede: "+e.getMessage());
+		}
+	}
+
+	//@override
+	public int desenhar (Graphics g, int comprimento, int altura, Mapa mapa, Bomberman bomberman) {
+		
+		g.drawImage(imagem,x*32,y*32,null);
+		return 0;
+	}
+
+	public Tipo getTipo () {
+		return Tipo.TP_PAREDE_METAL;
+	}
+}
+
 class Jogador extends Objeto {
+	private int vidas = 3;
 	private BufferedImage[] imagens = new BufferedImage[4];
+	private BufferedImage vida;
 
 	private int direcao = 0;
 
@@ -145,6 +220,7 @@ class Jogador extends Objeto {
 		    imagens[1] = ImageIO.read(Jogador.class.getResourceAsStream("/bazingafive/bomberman/imagens/bomberman/1.png"));
 		    imagens[2] = ImageIO.read(Jogador.class.getResourceAsStream("/bazingafive/bomberman/imagens/bomberman/2.png"));
 		    imagens[3] = ImageIO.read(Jogador.class.getResourceAsStream("/bazingafive/bomberman/imagens/bomberman/3.png"));
+		    vida = ImageIO.read(Jogador.class.getResourceAsStream("/bazingafive/bomberman/imagens/bomberman/vida.png"));
 		} catch (IOException e) {
 			System.out.println("Não consegui carregar o bomberman: "+e.getMessage());
 		}
@@ -152,7 +228,8 @@ class Jogador extends Objeto {
 
 	boolean naoParede (Vector<Objeto> objetos) {
 		for (int i=0;i<objetos.size();i++)
-			if (objetos.elementAt(i).getTipo() == Objeto.Tipo.TP_PAREDE)
+			if (objetos.elementAt(i).getTipo() == Objeto.Tipo.TP_PAREDE ||
+				objetos.elementAt(i).getTipo() == Objeto.Tipo.TP_PAREDE_METAL)
 				return false;
 		return true;
 	}
@@ -200,10 +277,19 @@ class Jogador extends Objeto {
 	}
 
 	//@override
-	public int desenhar (Graphics g, int comprimento, int altura) {
-		g.drawImage(imagens[direcao],comprimento*x/8+16,(altura-20)*y/8,null);
+	public int desenhar (Graphics g, int comprimento, int altura, Mapa mapa, Bomberman bomberman) {
+		g.drawImage(imagens[direcao],x*32,y*32,null);
+
+		for (int v=0;v<vidas;v++)
+			g.drawImage(vida,v*32+16,16,null);
 		return 0;
 	}	
+
+	public void mata () {
+		// Tira uma vida
+		if (vidas > 0)
+			vidas --;
+	}
 
 	public Tipo getTipo () {
 		return Tipo.TP_JOGADOR;
@@ -211,15 +297,27 @@ class Jogador extends Objeto {
 }
 
 class Mapa {
-	Vector <Vector<Vector<Objeto>>> objetos = new Vector <Vector<Vector<Objeto>>> ();
+	private int comprimento,altura;
+	private Vector <Vector<Vector<Objeto>>> objetos = new Vector <Vector<Vector<Objeto>>> ();
 
-	Mapa () {
-		for (int y=0;y<8;y++) {
+	public Mapa (int comprimento, int altura) {
+		this.comprimento = comprimento;
+		this.altura = altura;
+		
+		for (int y=0;y<altura;y++) {
 			objetos.addElement (new Vector<Vector<Objeto>>());
-			for (int x=0;x<8;x++) {
+			for (int x=0;x<comprimento;x++) {
 				objetos.elementAt(y).addElement(new Vector<Objeto>());
 			}
 		}
+	}
+
+	public int getComprimento () {
+		return comprimento;
+	}
+
+	public int getAltura () {
+		return altura;
 	}
 
 	public void removeObjeto (int x, int y, Objeto o) {
@@ -254,16 +352,27 @@ class Mapa {
 	}
 
 	public boolean inside (int x,int y) {
-		if (x >= 0 && x < 8 &&
-			y >= 0 && y < 8)
+		if (x >= 0 && x < comprimento &&
+			y >= 0 && y < altura)
 			return true;
 		return false;
 	}
 }
 
 public class Bomberman implements Tela {
-	Mapa mapa = new Mapa();
+	Vector<Explosao> explosoes = new Vector<Explosao>();
+	Mapa mapa = new Mapa(8,8);
+	Jogador jogador;
+
 	private int comprimento, altura;
+
+	public int getComprimento () {
+		return comprimento;
+	}
+
+	public int getAltura () {
+		return altura;
+	}
 
 	public void setTamanho (int comprimento, int altura) {
 		this.comprimento = comprimento;
@@ -271,8 +380,8 @@ public class Bomberman implements Tela {
 	}
 
 	public void teclaPressionada(KeyEvent e) {
-		for (int y=0;y<8;y++)
-			for (int x=0;x<8;x++) {
+		for (int y=0;y<mapa.getAltura();y++)
+			for (int x=0;x<mapa.getComprimento();x++) {
 				for (int z=0;z<mapa.getObjetos(x,y).size();z++) {
 					if (mapa.getObjetos(x,y).elementAt(z).executado == false) {
 						mapa.getObjetos(x,y).elementAt(z).executado = true;
@@ -283,15 +392,19 @@ public class Bomberman implements Tela {
 	}
 
 	public Bomberman () {
-		for (int y=0;y<8;y++)
-			for (int x=0;x<8;x++) {
-				if (x == 0 || y == 0 || x == 7 || y == 7)
-					mapa.setObjeto(x,y,new Parede(x,y));
+		for (int y=0;y<mapa.getAltura();y++)
+			for (int x=0;x<mapa.getComprimento();x++) {
+				mapa.setObjeto(x,y,new Piso(x,y));
+				
+				if (x == 0 || y == 0 || x == mapa.getComprimento()-1 || y == mapa.getAltura()-1)
+					mapa.setObjeto(x,y,new ParedeMetal(x,y));
 				else
-					mapa.setObjeto(x,y,new Piso(x,y));
+					mapa.setObjeto(x,y,new Parede(x,y));
 
-				if (x == 4 && y == 4)
-					mapa.setObjeto(x,y,new Jogador(x,y));
+				if (x == mapa.getComprimento()/2 && y == mapa.getAltura()/2) {
+					jogador = new Jogador(x,y);
+					mapa.setObjeto(x,y,jogador);
+				} 
 
 				for (int i=0;i<mapa.getObjetos(x,y).size();i++)
 					mapa.getObjetos(x,y).elementAt(i).carregar();
@@ -302,34 +415,36 @@ public class Bomberman implements Tela {
 		g.setColor(Color.black);
 		g.fillRect(0,0,comprimento,altura);
 
-		for (int y=0;y<8;y++)
-			for (int x=0;x<8;x++) {
-				for (int z=0;z<mapa.getObjetos(x,y).size();z++) {
-					if (mapa.getObjetos(x,y).elementAt(z).getTipo() == Objeto.Tipo.TP_PAREDE ||
-						mapa.getObjetos(x,y).elementAt(z).getTipo() == Objeto.Tipo.TP_PISO ||
-						mapa.getObjetos(x,y).elementAt(z).getTipo() == Objeto.Tipo.TP_BOMBA) {
-						if (mapa.getObjetos(x,y).elementAt(z).desenhar(g,comprimento,altura) == 1) {
-							mapa.getObjetos(x,y).remove(z);
-							z--;
-						}
-						else
-							mapa.getObjetos(x,y).elementAt(z).executado = false;
+		for (int y=0;y<mapa.getAltura();y++)
+			for (int x=0;x<mapa.getComprimento();x++) {
+				Vector <Objeto> objetos = mapa.getObjetos(x,y);
+				for (int z=0;z<objetos.size();z++) {
+					if (objetos.elementAt(z).desenhar(g,comprimento,altura,mapa,this) == 1) {
+						objetos.remove(z);
+						z--;
 					}
-				}
-				for (int z=0;z<mapa.getObjetos(x,y).size();z++) {
-					if (mapa.getObjetos(x,y).elementAt(z).getTipo() == Objeto.Tipo.TP_JOGADOR) {
-						if (mapa.getObjetos(x,y).elementAt(z).desenhar(g,comprimento,altura) == 1) {
-							mapa.getObjetos(x,y).remove(z);
-							z--;
-						}
-						else
-							mapa.getObjetos(x,y).elementAt(z).executado = false;
-					}
+					else
+						objetos.elementAt(z).executado = false;
 				}
 			}
+
+		jogador.desenhar(g,comprimento,altura,mapa,this);
+
+		for (int e=0;e<explosoes.size();e++) {
+			if (explosoes.elementAt(e).getTerminou()) {
+				explosoes.remove(e);
+				e--;
+			} else {
+				explosoes.elementAt(e).desenhar(this,g);
+			}
+		}
 	}
 
 	public int getProximaTela () {
 		return 2;
+	}
+
+	public void addExplosao (Explosao explosao) {
+		this.explosoes.addElement(explosao);
 	}
 }

@@ -151,7 +151,8 @@ var scnCutscene = {
 		this.textColor = "white";
 		this.textTime = 5;
 		this.dialog = [
-			"Porra bicho!/ Roubaram minha calça!/ Agora aquele /*ogro*/",
+			"Porra bicho!/ Roubaram minha calça!/ Agora aquele /-ogro-/",
+			
 			" /o Tales/ vai querer me prender por causa disso./ Vou de fininho para ele não me ver./",
 			"#",
 			"Ei!/ Pequena criatura, porquê não estás com/",
@@ -214,13 +215,6 @@ var scnCutscene = {
 		this.dialogNumber = 0;
 		this.target = 0;
 		this.addChar = function () {
-			if (!this.scene.dialog[this.dialogNumber]) {
-				var nextRenderer = new scnBomberman.renderer();
-				nextRenderer.scene = new scnBomberman.scene();
-				jsEngine.modules.render.renderer = nextRenderer;
-				jsEngine.modules.ui.show(GameMenu);
-				return;
-			}
 
 			if (this.scene.dialog[this.dialogNumber].charAt(this.positionAtDialog-1) == '/')
 				this.text[this.target] = "";
@@ -228,6 +222,14 @@ var scnCutscene = {
 			if (this.positionAtDialog > this.scene.dialog[this.dialogNumber].length) {
 				this.positionAtDialog = 0;
 				this.dialogNumber++;
+			}
+
+			if (this.dialogNumber >= this.scene.dialog.length) {
+				var nextRenderer = new scnBomberman.renderer();
+				nextRenderer.scene = new scnBomberman.scene();
+				jsEngine.modules.render.renderer = nextRenderer;
+				jsEngine.modules.ui.show(GameMenu);
+				return;
 			}
 
 			var c = this.scene.dialog[this.dialogNumber].charAt(this.positionAtDialog++);

@@ -334,8 +334,8 @@ function TileMap (w,h,ts, mapData) {
 	this.tales = null;
 
 	this.render = function () {
-		this.sx = (html5.canvas.width-this.w*this.ts)/2;
-		this.sy = (html5.canvas.height-this.h*this.ts)/2;
+		this.sx = (html5.canvas.width-this.w*this.ts)/2+jsEngine.modules.particles.moveMap().x;
+		this.sy = (html5.canvas.height-this.h*this.ts)/2+jsEngine.modules.particles.moveMap().y;
 
 		html5.context.fillStyle = "blue";
 		html5.context.fillRect (this.sx,

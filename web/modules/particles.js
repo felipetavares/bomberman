@@ -68,9 +68,11 @@ function ParticleManager () {
 
 	this.systems = [];
 
+	this.lastAddTime = jsEngine.pt;
 
 	this.addSystem = function (particleSystem) {
 		this.systems.push(particleSystem);
+		this.lastAddTime = jsEngine.pt;
 	}
 
 	this.render = function () {
@@ -81,6 +83,20 @@ function ParticleManager () {
 				this.systems.splice(s, 1);
 				s--;
 			}
+		}
+	}
+
+	this.moveMap = function () {
+		var x=0,y=0;
+
+		if (jsEngine.pt-this.lastAddTime < 0.2) {
+			x = Math.random()*20-10;
+			y = Math.random()*20-10;
+		}
+
+		return {
+			"x": x,
+			"y": y
 		}
 	}
 }

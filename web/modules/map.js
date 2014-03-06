@@ -42,6 +42,7 @@ function Tales (x, y) {
 	this.move = new Player().move;
 
 	this.lastUpdate = jsEngine.pt;
+	this.lastFrogUpdate = jsEngine.pt;
 
 	this.bombIn = function (map, x, y) {
 		if (map.isInside(x,y)) {
@@ -102,6 +103,11 @@ function Tales (x, y) {
 			this.move (map, nextX, nextY);
 
 			this.lastUpdate = jsEngine.pt;
+		}
+
+		if (jsEngine.pt-this.lastFrogUpdate > 3) {
+			map.data[this.y][this.x].push(new Bomb(this.x,this.y));
+			this.lastFrogUpdate = jsEngine.pt;
 		}
 	}
 
@@ -194,8 +200,7 @@ function Bomb (x, y) {
 	}
 
 	this.explode = function (map) {
-		document.getElementById("explosion").cloneNode(true).play()
-		//html5.audio("assets/audio/explosion.wav").cloneNode(true).play();
+		html5.audio("assets/audio/explosion.wav").cloneNode(true).play();
 
 		this.explodeTile(map,this.x,this.y);
 		this.explodeTile(map,this.x+1,this.y);
@@ -221,6 +226,94 @@ function Bomb (x, y) {
 					map.data[y][x][i].type == "tales" ) {
 					if (map.data[y][x][i] != this)
 						jsEngine.modules.combo.hit();
+					map.data[y][x].splice(i,1);
+					i--;
+				}
+				else
+				if (map.data[y][x][i].type == "bomb") {
+					map.data[y][x][i].explode(map);
+				}
+			}
+
+			if (explode)
+				jsEngine.modules.particles.addSystem(new Explosion(map.sx+x*map.ts+map.ts/2,
+															   map.sy+y*map.ts+map.ts/2,
+															   "orange",20));
+		}
+	}
+
+	this.render = function (map) {
+		html5.context.drawImage (this.image,map.sx+this.x*map.ts,
+											map.sy+this.y*map.ts);
+	}
+}
+
+// Explosive Frog
+function Frog (x, y) {
+	this.x = x;
+	this.y = y;
+	this.type = "bomb";
+	this.image = html5.image("assets/images/bomb/bomb.png");
+
+	// Polimorfismo
+	this.move = new DefaultObject().move;
+
+	this.startTime = jsEngine.pt;
+
+	this.calcNext = function (nextX,nextY) {
+		var random = Math.random();
+
+		if (random < 0.25) {
+			nextY = nextY+1;
+			this.image = 0;
+		} else
+		if (random < 0.50) {
+			nextX = nextX+1;
+			this.image = 3;
+		} else
+		if (random < 0.75) {
+			nextY = nextY-1;
+			this.image = 1;
+		} else {
+			nextX = nextX-1;
+			this.image = 2;
+		}
+	
+		return [nextX,nextY];
+	}
+
+	this.update = function (map) {
+		var nextX=this.x,nextY=this.y;
+
+		var ret = this.calcNext(nextX,nextY);
+		nextX = ret[0];
+		nextY = ret[1];
+		this.move (map, nextX, nextY);
+
+		/*
+		for (var i=0;i<map.data[this.y][this.x].length;i++) {
+			if (map.data[this.y][this.x][i].type == "wall") {
+				this.explode(map);
+			}
+		}*/		
+	}
+
+	this.explode = new Bomb().explode;
+
+	this.explodeTile = function (map, x, y) {
+		if (map.isInside(x,y)) {
+			var explode = true;
+			
+			for (var i=0;i<map.data[y][x].length;i++) {
+				if (map.data[y][x][i].type == "metalwall") {
+					explode=false;
+				}
+
+				if (map.data[y][x][i].type == "player") {
+					map.data[y][x][i].die();
+				} else
+				if (map.data[y][x][i] == this ||
+					map.data[y][x][i].type == "wall") {
 					map.data[y][x].splice(i,1);
 					i--;
 				}

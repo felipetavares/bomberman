@@ -53,15 +53,14 @@ var scnIntro = {
 		this.textColor = [255,255,255];
 		this.textTime = 5;
 		this.texts = [
-			//"Felipe Tavares",
-			//"Gabriel Araújo",
-			//"Camila Medeiros",
-			//"Cíntia Alves",
-			//"Ana Cecília",
-			//"apresentam",
+			"Felipe Tavares",
+			"Gabriel Araújo",
+			"Camila Medeiros",
+			"Cíntia Alves",
+			"Ana Cecília",
+			"apresentam",
 			"Bomberman 2D",
 			"a Rayslla Almeida game",
-		
 			"Powered by",
 			"Dead Wolf Engine"
 		];
@@ -137,12 +136,11 @@ var scnIntro = {
 												 this.scene.textColor[1]+","+
 												 this.scene.textColor[2]+","+(-Math.cos(time))+")";
 				this.renderText (text);
-			}// else {
-				var nextRenderer = new scnBomberman.renderer();
-				nextRenderer.scene = new scnBomberman.scene();
+			} else {
+				var nextRenderer = new scnCutscene.renderer();
+				nextRenderer.scene = new scnCutscene.scene();
 				jsEngine.modules.render.renderer = nextRenderer;
-				jsEngine.modules.ui.show(GameMenu);
-			//}
+			}
 		}
 	}
 }
@@ -216,8 +214,13 @@ var scnCutscene = {
 		this.dialogNumber = 0;
 		this.target = 0;
 		this.addChar = function () {
-			if (!this.scene.dialog[this.dialogNumber])
+			if (!this.scene.dialog[this.dialogNumber]) {
+				var nextRenderer = new scnBomberman.renderer();
+				nextRenderer.scene = new scnBomberman.scene();
+				jsEngine.modules.render.renderer = nextRenderer;
+				jsEngine.modules.ui.show(GameMenu);
 				return;
+			}
 
 			if (this.scene.dialog[this.dialogNumber].charAt(this.positionAtDialog-1) == '/')
 				this.text[this.target] = "";
@@ -260,13 +263,6 @@ var scnCutscene = {
 			html5.context.fillText (this.text[0], 	1*html5.canvas.width/4,
 										  			3*html5.canvas.height/4);
 
-
-			/*
-				var nextRenderer = new scnBomberman.renderer();
-				nextRenderer.scene = new scnBomberman.scene();
-				jsEngine.modules.render.renderer = nextRenderer;
-				jsEngine.modules.ui.show(GameMenu);
-			*/
 		}
 
 		setTimeout (html5.hitch(this.addChar,this), 500);

@@ -253,7 +253,7 @@ function Frog (x, y) {
 	this.x = x;
 	this.y = y;
 	this.type = "bomb";
-	this.image = html5.image("assets/images/bomb/bomb.png");
+	this.image = html5.image("assets/images/tales/frog.png");
 
 	// Polimorfismo
 	this.move = new DefaultObject().move;

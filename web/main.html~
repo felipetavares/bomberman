@@ -142,13 +142,13 @@
 			jsEngine.start();
 
 			jsEngine.userCallbacks['onGameStart'] = function () {
-				gameRenderer = new scnIntro.renderer();
-				gameRenderer.scene = new scnIntro.scene();
+				gameRenderer = new scnBomberman.renderer();
+				gameRenderer.scene = new scnBomberman.scene();
 
 				jsEngine.modules.render.renderer = gameRenderer;
 
 				createMenu();
-//				jsEngine.modules.ui.show(GameMenu);
+				jsEngine.modules.ui.show(GameMenu);
 			}
 
 			jsEngine.userCallbacks['onGameUpdate'] = function () {

@@ -1,0 +1,80 @@
+html {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	/*cursor: none;*/
+}
+
+.UIPanel {
+	text-align: center;
+	font-weight: normal;
+	font-size: 20px;
+
+	background: #0050e0;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	margin: 0px;
+	padding: 0px;
+
+	border-radius: 0px;
+
+	overflow: hidden;
+
+	cursor: default;
+}
+
+.UITitle {
+	position: relative;
+	display: block;
+	color: #003090;
+
+	border-radius: 0px;
+
+	margin: 2px;
+	margin-bottom: 16px;
+
+	border-bottom: 1px solid #6090ff;
+}
+
+.UIListView {
+	background: transparent;
+	position: relative;
+	top: 0;
+	left: 0;
+
+	margin: 0px;
+	padding: 0px;
+}
+
+.UIOption {
+	position: relative;
+	display: block;
+	color: darkblue;
+
+	border-left: 3px solid transparent;
+
+	margin: 2px;
+	padding: 8px;
+
+	cursor: pointer;
+}
+
+.UIOption-hover {
+	position: relative;
+	display: block;
+	color: white;
+
+	margin: 2px;
+	padding: 8px;
+
+	border-left: 3px solid red;
+
+	cursor: pointer;
+}

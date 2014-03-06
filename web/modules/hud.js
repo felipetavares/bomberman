@@ -21,12 +21,12 @@ function HUD () {
 
 		html5.context.textAlign = "left";
 		html5.context.textBaseline = "top";
-		html5.context.font = 16+"px sans-serif";
+		html5.context.font = 32+"px sans-serif";
 		var offset = html5.context.measureText (text).width/2;
 
 		jsEngine.modules.particles.addSystem(new Explosion (this.texts[name][1]+offset,
-															this.texts[name][2]+8,
-															"white",
+															this.texts[name][2]+16,
+															"#00a0ff",
 															100));
 	}
 
@@ -35,10 +35,10 @@ function HUD () {
 	}
 
 	this.render = function () {
-		html5.context.fillStyle = "black";
+		html5.context.fillStyle = "orange";
 		html5.context.textAlign = "left";
 		html5.context.textBaseline = "top";
-		html5.context.font = 16+"px sans-serif";
+		html5.context.font = 32+"px sans-serif";
 
 		for (var t in this.texts) {
 			html5.context.fillText (this.texts[t][0], this.texts[t][1], this.texts[t][2]);

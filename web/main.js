@@ -18,6 +18,7 @@ function JSInfo (name,version,info,behavior) {
 
 var AssetAnimation = 0;
 var AssetImage = 1;
+var AssetAudio = 2;
 
 function JSAsset (path, type, info) {
 	this.path = path;

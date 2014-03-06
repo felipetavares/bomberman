@@ -133,6 +133,27 @@ function Wall (x, y) {
 	}
 }
 
+// Tile de parede metálica
+function MetalWall (x, y) {
+	this.x = x;
+	this.y = y;
+	this.type = "metalwall";
+	this.image = html5.image("assets/images/wall/metal.png");
+
+	// Polimorfismo
+	this.move = new DefaultObject().move;
+
+	this.update = function (map) {
+
+	} 
+
+	this.render = function (map) {
+		html5.context.drawImage (this.image,
+								map.sx+this.x*map.ts,
+								map.sy+this.y*map.ts);
+	}
+}
+
 // Tile de piso
 function Floor (x, y) {
 	this.x = x;
@@ -173,6 +194,9 @@ function Bomb (x, y) {
 	}
 
 	this.explode = function (map) {
+		document.getElementById("explosion").cloneNode(true).play()
+		//html5.audio("assets/audio/explosion.wav").cloneNode(true).play();
+
 		this.explodeTile(map,this.x,this.y);
 		this.explodeTile(map,this.x+1,this.y);
 		this.explodeTile(map,this.x-1,this.y);
@@ -182,7 +206,13 @@ function Bomb (x, y) {
 
 	this.explodeTile = function (map, x, y) {
 		if (map.isInside(x,y)) {
+			var explode = true;
+			
 			for (var i=0;i<map.data[y][x].length;i++) {
+				if (map.data[y][x][i].type == "metalwall") {
+					explode=false;
+				}
+
 				if (map.data[y][x][i].type == "player") {
 					map.data[y][x][i].die();
 				} else
@@ -200,9 +230,10 @@ function Bomb (x, y) {
 				}
 			}
 
-			jsEngine.modules.particles.addSystem(new Explosion(map.sx+x*map.ts+map.ts/2,
-														   map.sy+y*map.ts+map.ts/2,
-														   "orange",20));
+			if (explode)
+				jsEngine.modules.particles.addSystem(new Explosion(map.sx+x*map.ts+map.ts/2,
+															   map.sy+y*map.ts+map.ts/2,
+															   "orange",20));
 		}
 	}
 
@@ -254,6 +285,7 @@ function Player (x, y) {
 	this.canMoveTo = function (map, x, y) {
 		for (var i=0;i<map.data[y][x].length;i++)
 			if (map.data[y][x][i].type == "wall" ||
+				map.data[y][x][i].type == "metalwall" ||
 				map.data[y][x][i].type == "bomb")
 				return false;
 		return true;
@@ -401,6 +433,9 @@ function TileMap (w,h,ts, mapData) {
 				case 'T':
 					this.tales = new Tales(x,y);
 					this.data[y][x].push(this.tales);
+				break;
+				case '#':
+					this.data[y][x].push(new MetalWall(x,y));
 				break;
 			}
 		}

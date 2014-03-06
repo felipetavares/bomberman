@@ -152,7 +152,6 @@ var scnCutscene = {
 		this.textTime = 5;
 		this.dialog = [
 			"Porra bicho!/ Roubaram minha calça!/ Agora aquele /-ogro-/",
-			
 			" /o Tales/ vai querer me prender por causa disso./ Vou de fininho para ele não me ver./",
 			"#",
 			"Ei!/ Pequena criatura, porquê não estás com/",
@@ -241,11 +240,11 @@ var scnCutscene = {
 					this.target = 1;
 				else
 					this.target = 0;
-				setTimeout (html5.hitch(this.addChar,this), 100);
+				setTimeout (html5.hitch(this.addChar,this), 50);
 			}
 			else {
 				this.text[this.target] += c;
-				setTimeout (html5.hitch(this.addChar,this), 100);
+				setTimeout (html5.hitch(this.addChar,this), 50);
 			}
 		}
 
@@ -271,18 +270,56 @@ var scnCutscene = {
 	}
 }
 
+
+function Cloud () {
+	this.vx = Math.random()*100;
+	this.x = html5.canvas.width;
+	this.y = html5.canvas.height*Math.random();
+	this.cloud = html5.image("assets/images/cloud/cloud.png");
+
+	this.render = function () {
+		this.x -= jsEngine.dt*this.vx;
+
+		html5.context.save();
+			html5.context.translate (this.x, this.y);
+			html5.context.scale (8,8);
+			html5.context.drawImage (this.cloud, 0, 0);
+		html5.context.restore();
+	}
+}
+
 scnBomberman = {
 	"scene": function () {
-		this.backgroundColor = "red";
+		this.backgroundColor = "ligthblue";
 		this.textColor = [255,128,0];
 	},
 
 	"renderer": function () {
 		this.scene = null;
+		this.x = html5.canvas.width;
+		this.clouds = [];
+
+		this.renderClouds = function () {
+			//this.clouds.push(new Cloud());
+
+			if (Math.random() > 0.999)
+				this.clouds.push(new Cloud());
+
+			for (var c=0;c<this.clouds.length;c++) {
+				this.clouds[c].render();
+				if (this.clouds[c].y < -256) {
+					this.clouds.splice (c, 1);
+					c--;
+				}
+			}
+		}
 
 		this.render = function () {
-			html5.context.fillStyle = this.scene.backgroundColor;
-			html5.context.fillRect (0,0,html5.canvas.width,html5.canvas.height);
+			$("#html_canvas").css("background","blue");
+			html5.context.clearRect (0,0,html5.canvas.width,html5.canvas.height);
+
+			this.renderClouds();
+
 			jsEngine.modules.map.render();
 		}
 	}

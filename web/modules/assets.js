@@ -31,6 +31,10 @@ function AssetManager () {
 		this.animationConversionTable[asset.path] = aID;
 	}
 
+	this.loadAudio = function (asset) {
+		html5.loadAudio (asset.path,asset.path);
+	}
+
 	this.loadImage = function (asset) {
 		html5.loadImage (asset.path,asset.path);
 	}
@@ -49,6 +53,9 @@ function AssetManager () {
 				break;
 				case AssetAnimation:
 					this.loadAnimation (jsEngine.assetList[asset]);
+				break;
+				case AssetAudio:
+					this.loadAudio(jsEngine.assetList[asset]);
 				break;
 				default:
 			}

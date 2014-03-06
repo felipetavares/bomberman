@@ -17,4 +17,7 @@ jsEngine.assetList = [
 	new JSAsset("assets/images/tales/right.png",AssetImage,{}),
 	new JSAsset("assets/images/wall/wall.png",AssetImage,{}),
 	new JSAsset("assets/images/floor/floor.png",AssetImage,{}),
+	new JSAsset("assets/images/wall/metal.png",AssetImage,{}),
+	new JSAsset("assets/images/cloud/cloud.png",AssetImage,{}),
+	new JSAsset("assets/audio/explosion.wav",AssetAudio,{}),
 ];

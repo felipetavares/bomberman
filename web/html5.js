@@ -69,6 +69,7 @@ function html5 () {
     this.loadAudio = function (fname,name) {
 	this.audios[name] = document.createElement('audio');
 	this.audios[name].src = fname;
+	this.audios[name].preload = true;
 	this.audios[name].addEventListener('canplaythrough', this.hitch (this.loadedImage,html5), false);
 	this.audios[name].load();
     }

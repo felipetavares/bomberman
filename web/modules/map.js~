@@ -289,8 +289,7 @@ function Frog (x, y) {
 		
 			for (var i=0;i<map.data[this.y][this.x].length;i++) {
 				if (map.data[this.y][this.x][i].type == "wall" ||
-				    map.data[this.y][this.x][i].type == "metalwall" ||
-				    map.data[this.y][this.x][i].type == "player") {
+				    map.data[this.y][this.x][i].type == "metalwall") {
 					this.explode(map);
 				}
 			}

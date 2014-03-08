@@ -31,6 +31,10 @@
 		</div>
 
 		<script type="text/javascript">
+			var Settings = {
+				sound: true
+			}
+
 			var map1 = [
 				['#','#','#','#','#','#','#','#','#','#','#','#','#','#','#','#'],
 				['#','_','_','_','_','_','_','_','_','_','_','_','_','_','_','#'],
@@ -54,11 +58,13 @@
 				GameMenu = new UIPanel();
 				var menu = new UIListView("Menu");
 				var hiscores = new UIListView("High Scores");
-				//var load = new UIListView("Load Game");
+				var options = new UIListView("Options");
+				var sound = new UIListView("Sound");
 
 				GameMenu.addView (menu);
 				GameMenu.addView (hiscores);
-				//GameMenu.addView (load);
+				GameMenu.addView (options);
+				GameMenu.addView (sound);
 
 				menu.constructor = function () {
 					this.list = [
@@ -87,6 +93,11 @@
 						{
 							content: "High Scores",
 							onActivate: function () {this.panel.switchTo(1)},
+							onSelect: null
+						},
+						{
+							content: "Options",
+							onActivate: function () {this.panel.switchTo(2)},
 							onSelect: null
 						},
 					];
@@ -119,17 +130,38 @@
 					});
 				}
 
-				/*
-				save.constructor = function () {
+				options.constructor = function () {
 					this.list = [
 						{
+							content: "Sound",
+							onActivate: function () {this.panel.switchTo(3)},
+							onSelect: null
+						},
+						{
 							content: "↵",
-							onActivate: function () {this.GameMenu.switchTo(0)},
+							onActivate: function () {this.panel.switchTo(0)},
 							onSelect: null
 						}
 					];
 				}
-				*/
+
+				sound.constructor = function () {
+					this.list = [
+						{
+							content: Settings.sound?"on":"off",
+							onActivate: function () {
+								Settings.sound = !Settings.content;
+								this.content = Settings.sound?"on":"off";
+							},
+							onSelect: null
+						},
+						{
+							content: "↵",
+							onActivate: function () {this.panel.switchTo(2)},
+							onSelect: null
+						}
+					];
+				}
 
 				GameMenu.open();
 			}

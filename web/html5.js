@@ -27,8 +27,8 @@ function html5 () {
     this.enableInput = function () {
     	this.listenerDown = this.hitch(this.onDownEvent,this);
  	    this.listenerUp = this.hitch(this.onUpEvent,this);
- 	    window.addEventListener('keydown',this.listenerDown,true);
-	    window.addEventListener('keyup',this.listenerUp,true);
+ 	    window.addEventListener('keydown',this.listenerDown,false);
+	    window.addEventListener('keyup',this.listenerUp,false);
 
 	    var k;
 	    for (k in this.keyboard) {
@@ -37,16 +37,16 @@ function html5 () {
     }
 
     this.disableInput = function () {
- 	    window.removeEventListener('keydown',this.listenerDown,true);
-	    window.removeEventListener('keyup',this.listenerUp,true);
+ 	    window.removeEventListener('keydown',this.listenerDown,false);
+	    window.removeEventListener('keyup',this.listenerUp,false);
     }
 
     this.getCanvas2dContext = function () {
 	this.canvas = document.getElementById("html_canvas");
 	if (this.canvas && this.canvas.getContext) {
 	    this.context = this.canvas.getContext('2d');
-	    this.canvas.addEventListener('mousemove', this.hitch (this.onMouseEvent,this), true);
-	    this.canvas.addEventListener('mousedown', this.hitch (this.onMouseClick,this), true);
+	    this.canvas.addEventListener('mousemove', this.hitch (this.onMouseEvent,this), false);
+	    this.canvas.addEventListener('mousedown', this.hitch (this.onMouseClick,this), false);
 	    return this.context;
 	}
 	else
@@ -88,8 +88,8 @@ function html5 () {
     }
 
     this.onDownEvent = function (evt) {
-    glb = evt;
 	evt.preventDefault();
+    glb = evt;
 	this.keyboard[evt.keyCode] = true;
     }
 

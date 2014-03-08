@@ -83,6 +83,8 @@ function UIListView (title) {
 	}
 
 	this.onKeyDown = function (evt) {
+		evt.prevendDefault();
+
 		if (this.hidden)
 			return;
 

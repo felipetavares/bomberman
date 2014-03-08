@@ -233,7 +233,6 @@ function JSEngine () {
 		html5.canvas.height = $(window).height();
 	}
 
-	window.resizeTo(640,480);
 	$(window).resize(html5.hitch(this.onWindowResize,this));
 }
 

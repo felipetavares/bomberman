@@ -4,8 +4,92 @@
 		"selected_items":
 		[
 			[
+				"floo",
+				"floorPatter"
+			],
+			[
+				"exp",
+				"explode"
+			],
+			[
 				"render",
-				"renderer"
+				"renderClouds"
+			],
+			[
+				"expl",
+				"explode"
+			],
+			[
+				"dial",
+				"dialogNumber"
+			],
+			[
+				"dia",
+				"dialogNumber"
+			],
+			[
+				"po",
+				"positionAtDialog"
+			],
+			[
+				"fill",
+				"fillStyle"
+			],
+			[
+				"bo",
+				"bomb"
+			],
+			[
+				"com",
+				"combo"
+			],
+			[
+				"My",
+				"myScore"
+			],
+			[
+				"lister",
+				"listenerUp"
+			],
+			[
+				"hit",
+				"hitNum"
+			],
+			[
+				"con",
+				"continuousPeriod"
+			],
+			[
+				"las",
+				"lastBombUpdate"
+			],
+			[
+				"next",
+				"nextY"
+			],
+			[
+				"nex",
+				"nextY"
+			],
+			[
+				"bom",
+				"bombNear"
+			],
+			[
+				"can",
+				"canMoveTo"
+			],
+			[
+				"parti",
+				"particles"
+			],
+			[
+				"s",
+				"systems"
+			],
+			[
+				"explode",
+				"explodeTile"
 			],
 			[
 				"border",
@@ -91,62 +175,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "main-sat.html",
-			"settings":
-			{
-				"buffer_size": 5476,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "style.css",
-			"settings":
-			{
-				"buffer_size": 582,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "main.js",
-			"settings":
-			{
-				"buffer_size": 5949,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "main.html",
-			"settings":
-			{
-				"buffer_size": 2609,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "modules/render.js",
-			"settings":
-			{
-				"buffer_size": 8849,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "assets/list.js",
-			"settings":
-			{
-				"buffer_size": 458,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "css/UI.css",
-			"settings":
-			{
-				"buffer_size": 905,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -172,6 +200,14 @@
 	},
 	"file_history":
 	[
+		"/home/philips/development/JSEngine/modules/render.js",
+		"/home/philips/development/JSEngine/main.js",
+		"/home/philips/development/bomberman/web/html5.js",
+		"/home/philips/development/bomberman/web/modules/ui.js",
+		"/home/philips/development/bomberman/web/modules/animation.js",
+		"/home/philips/development/bomberman/web/modules/character.js",
+		"/home/philips/development/bomberman/web/main-sat.html",
+		"/home/philips/development/bomberman/web/modules/render.js",
 		"/home/philips/development/bomberman/web/backup.js",
 		"/home/philips/development/bomberman/web/jquery.js",
 		"/home/philips/development/bomberman/web/assets/list.js",
@@ -179,7 +215,6 @@
 		"/home/philips/development/bomberman/web/style.css",
 		"/home/philips/development/bomberman/web/main.html",
 		"/home/philips/development/bomberman/web/main.js",
-		"/home/philips/development/JSEngine/main.js",
 		"/home/philips/development/JSEngine/main.html",
 		"/home/philips/development/bomberman/web/game.js",
 		"/home/philips/development/bomberman/web/game.html",
@@ -253,14 +288,52 @@
 		"height": 0.0,
 		"where_history":
 		[
+			"/home/philips/development/bomberman/web",
 			""
 		]
 	},
 	"find_state":
 	{
-		"case_sensitive": true,
+		"case_sensitive": false,
 		"find_history":
 		[
+			"Floor",
+			"Frog",
+			"Player",
+			"Play",
+			"Tales",
+			"Player",
+			"\\[y",
+			"\\[x",
+			"Tales",
+			"AssetImage",
+			"AssetAudio",
+			"metal",
+			"wall",
+			"canMoveTo",
+			"can",
+			"Bomberman",
+			"TileMap",
+			"wall",
+			"tales",
+			"Bomb",
+			"Player",
+			"player",
+			"Tales",
+			"ha",
+			"adding",
+			"hide",
+			"Player",
+			"panel",
+			"Player",
+			"Tales",
+			"particles",
+			"\\(",
+			"explode",
+			"this\\.",
+			"this",
+			"wall",
+			"this",
 			"alert",
 			"27",
 			"public Parede",
@@ -310,6 +383,22 @@
 		"regex": true,
 		"replace_history":
 		[
+			"[this.y",
+			"[this.x",
+			"cloud",
+			"Cutscene",
+			"floor",
+			"wall",
+			"tales",
+			"hc",
+			"hb",
+			"GameMenu",
+			"this.particles",
+			"(map,",
+			"this.explode",
+			"",
+			"bomb",
+			"map",
 			"objetos",
 			"32",
 			"Mapa mapa, Bomberman bomberman) {",
@@ -346,197 +435,8 @@
 	"groups":
 	[
 		{
-			"selected": 4,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "main-sat.html",
-					"settings":
-					{
-						"buffer_size": 5476,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "style.css",
-					"settings":
-					{
-						"buffer_size": 582,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "main.js",
-					"settings":
-					{
-						"buffer_size": 5949,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2034,
-								2034
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 1056.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "main.html",
-					"settings":
-					{
-						"buffer_size": 2609,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								916,
-								916
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 105.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "modules/render.js",
-					"settings":
-					{
-						"buffer_size": 8849,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1716,
-								1716
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 840.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "assets/list.js",
-					"settings":
-					{
-						"buffer_size": 458,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								430,
-								430
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "css/UI.css",
-					"settings":
-					{
-						"buffer_size": 905,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								700,
-								700
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/CSS/CSS.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 705.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],

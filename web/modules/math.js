@@ -8,6 +8,12 @@ function VectorMath () {
 		this.x = x;
 		this.y = y;
 
+		this.complete = function (x) {
+			if (x >= this.x[1])
+				return true;
+			return false;
+		}
+
 		this.interpolate = function (x) {
 			if (x <= this.x[0])
 				return this.y[0];

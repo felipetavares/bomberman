@@ -180,6 +180,12 @@ var scnCutscene = {
 			"#",
 			".../"
 		];
+		this.facesA = [
+			html5.image("assets/images/cutscene/tales0.png")
+		];
+		this.facesB = [
+			html5.image("assets/images/cutscene/tales0.png")
+		];
 	},
 
 	"renderer": function () {
@@ -264,6 +270,17 @@ var scnCutscene = {
 			html5.context.fillText (this.text[0], 	1*html5.canvas.width/4,
 										  			3*html5.canvas.height/4);
 
+			html5.context.drawImage (this.scene.facesA[0],
+									1*html5.canvas.width/4-this.scene.facesA[0].width/2,
+									(html5.canvas.height-this.scene.facesA[0].height)/2);
+			
+			html5.context.save();
+				html5.context.translate(3*html5.canvas.width/4-this.scene.facesB[0].width*2/2,
+										(html5.canvas.height-this.scene.facesB[0].height*2)/2);
+				html5.context.scale(2,2);
+				html5.context.drawImage (this.scene.facesB[0],
+										 0,0);
+			html5.context.restore();
 		}
 
 		setTimeout (html5.hitch(this.addChar,this), 500);

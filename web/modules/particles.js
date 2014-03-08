@@ -90,8 +90,10 @@ function ParticleManager () {
 		var x=0,y=0;
 
 		if (jsEngine.pt-this.lastAddTime < 0.2) {
-			x = Math.random()*20-10;
-			y = Math.random()*20-10;
+			var value = 1/(jsEngine.pt-this.lastAddTime)
+
+			x = Math.random()*value-value/2;
+			y = Math.random()*value-value/2;
 		}
 
 		return {

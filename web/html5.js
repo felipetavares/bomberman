@@ -89,12 +89,12 @@ function html5 () {
 
     this.onDownEvent = function (evt) {
     glb = evt;
-	evt.ignoreDefault();
+	evt.preventDefault();
 	this.keyboard[evt.keyCode] = true;
     }
 
     this.onUpEvent = function (evt) {
-	evt.ignoreDefault();
+	evt.preventDefault();
 	this.keyboard[evt.keyCode] = false;
     }
 

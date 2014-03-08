@@ -29,6 +29,11 @@ function html5 () {
  	    this.listenerUp = this.hitch(this.onUpEvent,this);
  	    window.addEventListener('keydown',this.listenerDown,true);
 	    window.addEventListener('keyup',this.listenerUp,true);
+
+	    var k;
+	    for (k in this.keyboard) {
+	    	this.keyboard[k] = false;
+	    }
     }
 
     this.disableInput = function () {
@@ -84,10 +89,12 @@ function html5 () {
 
     this.onDownEvent = function (evt) {
     glb = evt;
+	evt.ignoreDefault();
 	this.keyboard[evt.keyCode] = true;
     }
 
     this.onUpEvent = function (evt) {
+	evt.ignoreDefault();
 	this.keyboard[evt.keyCode] = false;
     }
 

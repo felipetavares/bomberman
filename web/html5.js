@@ -45,8 +45,12 @@ function html5 () {
 	this.canvas = document.getElementById("html_canvas");
 	if (this.canvas && this.canvas.getContext) {
 	    this.context = this.canvas.getContext('2d');
-	    this.canvas.addEventListener('mousemove', this.hitch (this.onMouseEvent,this), false);
-	    this.canvas.addEventListener('mousedown', this.hitch (this.onMouseClick,this), false);
+	    this.canvas.addEventListener('mousemove', this.hitch (this.onMouseEvent,this), true);
+	    this.canvas.addEventListener('mousedown', this.hitch (this.onMouseClick,this), true);
+	    this.canvas.addEventListener('mouseup', this.hitch (this.onMouseRelease,this), true);
+	    this.canvas.addEventListener('touchmove', this.hitch (this.onMouseEvent,this), true);
+	    this.canvas.addEventListener('touchstart', this.hitch (this.onMouseClick,this), true);
+	    this.canvas.addEventListener('touchend', this.hitch (this.onMouseRelease,this), true);
 	    return this.context;
 	}
 	else
@@ -75,7 +79,7 @@ function html5 () {
 	this.audios[name] = document.createElement('audio');
 	this.audios[name].src = fname;
 	this.audios[name].preload = true;
-	this.audios[name].addEventListener('canplaythrough', this.hitch (this.loadedImage,html5), false);
+	//this.audios[name].addEventListener('canplaythrough', this.hitch (this.loadedImage,html5), false);
 	this.audios[name].load();
     }
 
@@ -112,19 +116,19 @@ function html5 () {
 	return xmlhttp.responseText;
     }
 
-    this.getMousePos = function (evt) {
-	return [evt.offsetX,evt.offsetY];
-    }
-
     this.onMouseEvent = function (evt) {
-	this.mousePos = this.getMousePos(evt);
+    	evt.preventDefault();
+		this.mousePos = [evt.pageX,evt.pageY];
     }
 
     this.onMouseClick = function (evt) {
+    	evt.preventDefault();
     	this.mouseButton = true;
+		this.mousePos = [evt.pageX,evt.pageY];
     }
 
     this.onMouseRelease = function (evt) {
+    	evt.preventDefault();
     	this.mouseButton = false;
     }
 
@@ -137,16 +141,17 @@ function html5 () {
 		this.imgsLoaded ++;
 		var i,s=0;
 		for (i in this.images) {s++;};
-		for (i in this.audios) {s++;};
+		//for (i in this.audios) {s++;};
 
-		var msg = "Loading...";
+		var msg = "Loading assets...";
 
-		html5.context.font = "normal 50px serif";
+		html5.context.font = "normal 40px serif";
 		html5.context.fillStyle = "red";
 		this.loadingTextSize = html5.context.measureText(msg).width;
 		html5.context.fillText (msg,html5.canvas.width/2-html5.context.measureText(msg).width/2,html5.canvas.height/2);
 
 		msg = "" + Math.floor((this.imgsLoaded/s*100)) + "%";
+		msg += " "+this.imgsLoaded+"/"+s;
 
 		html5.context.fillStyle = "red";
 		html5.context.fillRect (html5.canvas.width/2-this.loadingTextSize/2,html5.canvas.height/2+30,this.imgsLoaded/s *(this.loadingTextSize),5);
@@ -158,7 +163,8 @@ function html5 () {
 		}
 	}
 
-    this.onLoad = function () {
+	this.onLoad = function () {
+		alert ("Everything Loaded!");
 	}
 
 	this.loading = function () {

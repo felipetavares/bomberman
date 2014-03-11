@@ -49,8 +49,9 @@ var scnLogo = {
 
 var scnIntro = {
 	"scene": function () {
-		this.backgroundColor = "black";
-		this.textColor = [255,255,255];
+		this.background = html5.image("assets/images/cutscene/background.png");
+		this.backgroundColor = "white";
+		this.textColor = [0,0,0];
 		this.textTime = 5;
 		this.texts = [
 			"Felipe Tavares",
@@ -59,10 +60,8 @@ var scnIntro = {
 			"Cíntia Alves",
 			"Ana Cecília",
 			"apresentam",
-			"Bomberman 2D",
-			"a Rayslla Almeida game",
-			"Powered by",
-			"Dead Wolf Engine"
+			"El Aluno",
+			"um jogo de Rayslla Almeida",
 		];
 	},
 
@@ -71,8 +70,6 @@ var scnIntro = {
 		this.fontSize = 60;
 
 		this.startTime = jsEngine.pt;
-
-		this.stage = 0;
 
 		this.calcFontSize = function (text, desired) {
 			html5.context.font = Math.floor(this.fontSize)+"px sans-serif";
@@ -84,32 +81,6 @@ var scnIntro = {
 		}
 
 		this.renderText = function (text) {
-			if (this.stage == 0 && this.scene.textColor[1] >= 255) {
-				this.stage = 1;
-			}
-			if (this.stage == 1 && this.scene.textColor[0] <= 0) {
-				this.stage = 2;
-			}
-			if (this.stage == 2 && this.scene.textColor[2] <= 0) {
-				this.stage = 0;
-			}
-
-			if (this.stage == 0) {
-				this.scene.textColor[1]++;
-				this.scene.textColor[2]--;
-				this.scene.textColor[0]++;
-			}
-			if (this.stage == 1) {
-				this.scene.textColor[1]++;
-				this.scene.textColor[2]++;			
-				this.scene.textColor[0]--;
-			}
-			if (this.stage == 2) {
-				this.scene.textColor[1]++;
-				this.scene.textColor[0]++;
-				this.scene.textColor[2]--;
-			}
-
 			var time = (jsEngine.pt-this.startTime)/2;
 
 			this.calcFontSize(text,html5.canvas.width/2);
@@ -118,23 +89,32 @@ var scnIntro = {
 			html5.context.textBaseline = "middle";
 			html5.context.font = this.fontSize+"px sans-serif";
 			html5.context.fillText (text, html5.canvas.width/2,
-										  html5.canvas.height/2+Math.sin(time)*html5.canvas.height/4);
+										  html5.canvas.height/2);
 		}
 
 		this.render = function () {
+			var s = html5.canvas.width/this.scene.background.width;
 			html5.context.fillStyle = this.scene.backgroundColor;
 			html5.context.fillRect (0,0,html5.canvas.width,html5.canvas.height);
 
 			var time = jsEngine.pt-this.startTime;
 			var index = parseInt(time/this.scene.textTime);
 
+			html5.context.save();
+				html5.context.translate(0,-time*s*this.scene.background.height/
+										  ((this.scene.texts.length+2)*this.scene.textTime));
+				html5.context.scale(s,s)
+				html5.context.drawImage (this.scene.background,0,0)
+			html5.context.restore();
+
 			if (index < this.scene.texts.length) {
 				var text = this.scene.texts[index];
 				time = time%this.scene.textTime/this.scene.textTime*Math.PI*2;
 
-				html5.context.fillStyle = "rgba("+this.scene.textColor[0]+","+
-												 this.scene.textColor[1]+","+
-												 this.scene.textColor[2]+","+(-Math.cos(time))+")";
+				html5.context.fillStyle = "rgba("+	this.scene.textColor[0]+","+
+													this.scene.textColor[1]+","+
+													this.scene.textColor[2]+","+
+													(-Math.cos(time))+")";
 				this.renderText (text);
 			} else {
 				var nextRenderer = new scnCutscene.renderer();
@@ -151,11 +131,11 @@ var scnCutscene = {
 		this.textColor = "white";
 		this.textTime = 5;
 		this.dialog = [
-			"Porra bicho!/ Roubaram minha calça!/ Agora aquele /-ogro-/",
+			"Porra bixo!/ Roubaram minha calça!/ Agora aquele /-ogro-/",
 			" /o Tales/ vai querer me prender por causa disso./ Vou de fininho para ele não me ver./",
 			"#",
-			"Ei!/ Pequena criatura, porquê não estás com/",
-			"as vestimentas de acordo com os padrões exigidos/",
+			"Ei!/ Pequena criatura, porquê não estás com",
+			"as vestimentas de acordo com os padrões exigidos",
 			"pelo colégio?/",
 			"Esta é uma instituição de respeito!/",
 			"#",
@@ -177,18 +157,20 @@ var scnCutscene = {
 			"Venha me pegar se for capaz!/",
 			"#",
 			"Muahaha!/ Não se preucupe quanto a isso!/ Irei!/",
-			"#",
-			".../"
 		];
 		this.facesA = [
-			html5.image("assets/images/cutscene/tales0.png")
+			html5.image("assets/images/cutscene/boy0.png"),
+			html5.image("assets/images/cutscene/boy1.png"),
 		];
 		this.facesB = [
-			html5.image("assets/images/cutscene/tales0.png")
+			html5.image("assets/images/cutscene/tales0.png"),
+			html5.image("assets/images/cutscene/tales1.png"),
 		];
 	},
 
 	"renderer": function () {
+		this.A = 0;
+		this.B = 0;
 		this.text = ["",""];
 		this.scene = null;
 		this.fontSize = 60;
@@ -220,6 +202,15 @@ var scnCutscene = {
 		this.dialogNumber = 0;
 		this.target = 0;
 		this.addChar = function () {
+			if (this.target == 1) {
+				if (this.text[this.target].length%2 == 0) {
+					this.B = (this.B+1)%2;
+				}
+			} else {
+				if (this.text[this.target].length%2 == 0) {
+					this.A = (this.A+1)%2;
+				}
+			}
 
 			if (this.scene.dialog[this.dialogNumber].charAt(this.positionAtDialog-1) == '/')
 				this.text[this.target] = "";
@@ -237,6 +228,10 @@ var scnCutscene = {
 				return;
 			}
 
+			if (this.text[this.target].length > 15 &&
+				this.text[this.target][this.text[this.target].length-1] == ' ')
+				this.text[this.target] = "";
+
 			var c = this.scene.dialog[this.dialogNumber].charAt(this.positionAtDialog++);
 
 			if (c == '/') {
@@ -246,11 +241,11 @@ var scnCutscene = {
 					this.target = 1;
 				else
 					this.target = 0;
-				setTimeout (html5.hitch(this.addChar,this), 50);
+				setTimeout (html5.hitch(this.addChar,this), 80);
 			}
 			else {
 				this.text[this.target] += c;
-				setTimeout (html5.hitch(this.addChar,this), 50);
+				setTimeout (html5.hitch(this.addChar,this), 80);
 			}
 		}
 
@@ -265,25 +260,33 @@ var scnCutscene = {
 			html5.context.textBaseline = "middle";
 			html5.context.font = 16+"px sans-serif";
 			html5.context.fillText (this.text[1], 	3*html5.canvas.width/4,
-										  			3*html5.canvas.height/4);
+										  			(html5.canvas.height-this.scene.facesB[0].height*2)/2+
+										  			this.scene.facesB[0].height*4+16);
 
 			html5.context.fillText (this.text[0], 	1*html5.canvas.width/4,
-										  			3*html5.canvas.height/4);
+										  			(html5.canvas.height-this.scene.facesA[0].height*2)/2+
+										  			this.scene.facesA[0].height*4+16);
 
-			html5.context.drawImage (this.scene.facesA[0],
-									1*html5.canvas.width/4-this.scene.facesA[0].width/2,
-									(html5.canvas.height-this.scene.facesA[0].height)/2);
-			
-			html5.context.save();
-				html5.context.translate(3*html5.canvas.width/4-this.scene.facesB[0].width*2/2,
-										(html5.canvas.height-this.scene.facesB[0].height*2)/2);
-				html5.context.scale(2,2);
-				html5.context.drawImage (this.scene.facesB[0],
-										 0,0);
-			html5.context.restore();
+			if (this.target == 0) {
+				html5.context.save();
+					html5.context.translate(1*html5.canvas.width/4-this.scene.facesA[this.A].width*2,
+											(html5.canvas.height-this.scene.facesA[this.A].height*2)/2);
+					html5.context.scale(4,4);
+					html5.context.drawImage (this.scene.facesA[this.A],
+											 0,0);
+				html5.context.restore();
+			} else {
+				html5.context.save();
+					html5.context.translate(3*html5.canvas.width/4-this.scene.facesB[this.B].width*2,
+											(html5.canvas.height-this.scene.facesB[this.B].height*2)/2);
+					html5.context.scale(4,4);
+					html5.context.drawImage (this.scene.facesB[this.B],
+											 0,0);
+				html5.context.restore();
+			}
 		}
 
-		setTimeout (html5.hitch(this.addChar,this), 500);
+		setTimeout (html5.hitch(this.addChar,this), 0);
 	}
 }
 

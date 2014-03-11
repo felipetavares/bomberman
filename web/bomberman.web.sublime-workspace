@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"mouse",
+				"mouseButton"
+			],
+			[
+				"ht",
+				"html5"
+			],
+			[
+				"text",
+				"textTime"
+			],
+			[
+				"res",
+				"restore"
+			],
+			[
+				"key",
+				"keyboard"
+			],
+			[
 				"floo",
 				"floorPatter"
 			],
@@ -175,6 +195,78 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "modules/map.js",
+			"settings":
+			{
+				"buffer_size": 16411,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "assets/list.js",
+			"settings":
+			{
+				"buffer_size": 1591,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "modules/render.js",
+			"settings":
+			{
+				"buffer_size": 10148,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "style.css",
+			"settings":
+			{
+				"buffer_size": 582,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "main.js",
+			"settings":
+			{
+				"buffer_size": 6876,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "html5.js",
+			"settings":
+			{
+				"buffer_size": 5023,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "main.html",
+			"settings":
+			{
+				"buffer_size": 5536,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "css/UI.css",
+			"settings":
+			{
+				"buffer_size": 905,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "modules/ui.js",
+			"settings":
+			{
+				"buffer_size": 3787,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -200,6 +292,8 @@
 	},
 	"file_history":
 	[
+		"/home/philips/development/bomberman/web/css/UI.css",
+		"/home/philips/development/bomberman/web/assets/images/floor/floor.png",
 		"/home/philips/development/JSEngine/modules/render.js",
 		"/home/philips/development/JSEngine/main.js",
 		"/home/philips/development/bomberman/web/html5.js",
@@ -297,6 +391,18 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Page",
+			"client",
+			"offset",
+			"Player",
+			"for",
+			"\n				",
+			"tales",
+			"0",
+			"play",
+			"true",
+			"ignore",
+			"B",
 			"Floor",
 			"Frog",
 			"Player",
@@ -378,11 +484,19 @@
 			"jDiv"
 		],
 		"highlight": true,
-		"in_selection": false,
+		"in_selection": true,
 		"preserve_case": false,
 		"regex": true,
 		"replace_history":
 		[
+			"page",
+			"Page",
+			"client",
+			"boy",
+			"this.A",
+			"false",
+			"prevent",
+			"A",
 			"[this.y",
 			"[this.x",
 			"cloud",
@@ -435,8 +549,251 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "modules/map.js",
+					"settings":
+					{
+						"buffer_size": 16411,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								15345,
+								15345
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 9714.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "assets/list.js",
+					"settings":
+					{
+						"buffer_size": 1591,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1512,
+								1512
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "modules/render.js",
+					"settings":
+					{
+						"buffer_size": 10148,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7223,
+								7223
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3450.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "style.css",
+					"settings":
+					{
+						"buffer_size": 582,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6,
+								6
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "main.js",
+					"settings":
+					{
+						"buffer_size": 6876,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4564,
+								4564
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2242.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "html5.js",
+					"settings":
+					{
+						"buffer_size": 5023,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3789,
+								3789
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1315.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "main.html",
+					"settings":
+					{
+						"buffer_size": 5536,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1478,
+								1478
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 540.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "css/UI.css",
+					"settings":
+					{
+						"buffer_size": 905,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								905,
+								905
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 699.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "modules/ui.js",
+					"settings":
+					{
+						"buffer_size": 3787,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								551,
+								551
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],

@@ -22,5 +22,9 @@ jsEngine.assetList = [
 	new JSAsset("assets/images/wall/metal.png",AssetImage,{}),
 	new JSAsset("assets/images/cloud/cloud.png",AssetImage,{}),
 	new JSAsset("assets/images/cutscene/tales0.png",AssetImage,{}),
+	new JSAsset("assets/images/cutscene/tales1.png",AssetImage,{}),
+	new JSAsset("assets/images/cutscene/boy0.png",AssetImage,{}),
+	new JSAsset("assets/images/cutscene/boy1.png",AssetImage,{}),
+	new JSAsset("assets/images/cutscene/background.png",AssetImage,{}),
 	new JSAsset("assets/audio/explosion.wav",AssetAudio,{}),
 ];

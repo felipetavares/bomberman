@@ -8,7 +8,7 @@ function UIListView (title) {
 	this.list = null;
 	this.panel = null;
 	this.html = null;
-	this.op = null;
+	this.op = [];
 
 	this.selectedOption = 0;
 
@@ -20,7 +20,6 @@ function UIListView (title) {
 
 	this.addOption = function (op, onActivate, onSelect) {
 		var html = $("<div>");
-		this.op = html;
 		html.attr ("class", "UIOption");
 		html.text (op);
 
@@ -28,6 +27,7 @@ function UIListView (title) {
 			html.click (onActivate);
 		}
 
+		this.op[op] = html;
 		this.html.append (html);
 	}
 
@@ -83,7 +83,7 @@ function UIListView (title) {
 	}
 
 	this.onKeyDown = function (evt) {
-		evt.prevendDefault();
+		evt.preventDefault();
 
 		if (this.hidden)
 			return;

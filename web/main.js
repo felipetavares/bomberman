@@ -48,6 +48,8 @@ function JSEngine () {
 
 	this.consoleDown = false;
 
+	this.filesLoaded = 0;
+
 	// Helper functions
 	this.loadFile = function (list, position) {
 		if (position >= list.length) {
@@ -63,6 +65,27 @@ function JSEngine () {
 			this.startupComplete();
 			return;
 		}
+
+		this.filesLoaded++;
+		var s = list.length;
+
+		html5.context.fillStyle = "black";
+		html5.context.fillRect (0,0,html5.canvas.width,html5.canvas.height);
+		var msg = "Loading "+list[position][2];
+
+		html5.context.font = "normal 30px serif";
+		html5.context.fillStyle = "red";
+		this.loadingTextSize = html5.context.measureText(msg).width;
+		html5.context.fillText (msg,html5.canvas.width/2-html5.context.measureText(msg).width/2,html5.canvas.height/2);
+
+		msg = "" + Math.floor((this.filesLoaded/s*100)) + "%";
+		msg += " "+this.filesLoaded+"/"+s;
+
+		html5.context.fillStyle = "red";
+		html5.context.fillRect (html5.canvas.width/2-this.loadingTextSize/2,html5.canvas.height/2+30,this.filesLoaded/s *(this.loadingTextSize),5);
+		html5.context.font = "normal 20px serif";
+		html5.context.fillText (msg,html5.canvas.width/2-html5.context.measureText(msg).width/2,html5.canvas.height/2+65);
+
 
 		var filename = list[position][2];
 		var script = document.createElement ("script");
@@ -157,6 +180,8 @@ function JSEngine () {
 		this.log ("<br/>");
 		this.log ("Starting up... <br/>");
 
+		this.onWindowResize();
+
 		// Loads the file needed for the module
 		this.loadFile (this.moduleList, 0);
 	}
@@ -215,11 +240,11 @@ function JSEngine () {
 			}
 		}		
 	
-		this.pt = new Date()/1000;
-
-		this.userCallbacks['onGameStart']();
-
-		this.interval = setInterval (html5.hitch (this.update,this), this.updateTime*1000);
+		html5.onLoad = html5.hitch (function () {
+			this.pt = new Date()/1000;
+			this.userCallbacks['onGameStart']();
+			this.interval = setInterval (html5.hitch (this.update,this), this.updateTime*1000);
+		},this);
 	}
 
 	this.log = function (str) {

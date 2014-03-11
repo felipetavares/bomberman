@@ -98,11 +98,18 @@ function Tales (x, y) {
 		return [nextX,nextY];
 	}
 
-	this.update = function (map) {
+	this.calcNextPlayer = function (nextX,nextY, player) {
+		nextX = (nextX-player.x)>0?1:-1;
+		nextY = (nextY-player.y)>0?1:-1;
+	
+		return [nextX,nextY];
+	}
+
+	this.update = function (map, player) {
 		if (jsEngine.pt-this.lastUpdate > 0.3) {
 			var nextX=this.x,nextY=this.y;
 
-			var ret = this.calcNext(nextX,nextY);
+			var ret = this.calcNextPlayer(nextX,nextY,player);
 			nextX = ret[0];
 			nextY = ret[1];
 
@@ -138,6 +145,27 @@ function Wall (x, y) {
 	this.y = y;
 	this.type = "wall";
 	this.image = html5.image("assets/images/wall/wall.png");
+
+	// Polimorfismo
+	this.move = new DefaultObject().move;
+
+	this.update = function (map) {
+
+	} 
+
+	this.render = function (map) {
+		html5.context.drawImage (this.image,
+								map.sx+this.x*map.ts,
+								map.sy+this.y*map.ts);
+	}
+}
+
+// Tile de parede de vidro
+function Glass (x, y) {
+	this.x = x;
+	this.y = y;
+	this.type = "wall";
+	this.image = html5.image("assets/images/wall/glass.png");
 
 	// Polimorfismo
 	this.move = new DefaultObject().move;
@@ -229,7 +257,8 @@ function Bomb (x, y) {
 	}
 
 	this.explode = function (map) {
-		//html5.audio("assets/audio/explosion.wav").cloneNode(true).play();
+		if (Settings.sound)
+			html5.audio("assets/audio/explosion.wav").cloneNode(true).play();
 
 		this.explodeTile(map,this.x,this.y);
 		this.explodeTile(map,this.x+1,this.y);
@@ -455,25 +484,71 @@ function Player (x, y) {
 		}
 	}
 
+	this.mouseUp = function () {
+		if (html5.mouseButton &&
+			html5.mousePos[1] < html5.canvas.height/4 &&
+			html5.mousePos[0] > html5.canvas.width/4 &&
+			html5.mousePos[0] < 3*html5.canvas.width/4)
+			return true;
+		return false;
+	}
+
+	this.mouseDown = function () {
+		if (html5.mouseButton &&
+			html5.mousePos[1] > 3*html5.canvas.height/4 &&
+			html5.mousePos[0] > html5.canvas.width/4 &&
+			html5.mousePos[0] < 3*html5.canvas.width/4)
+			return true;
+		return false;
+	}
+
+	this.mouseLeft = function () {
+		if (html5.mouseButton &&
+			html5.mousePos[0] < html5.canvas.width/4 &&
+			html5.mousePos[1] > html5.canvas.height/4 &&
+			html5.mousePos[1] < 3*html5.canvas.height/4)
+			return true;
+		return false;
+	}
+
+	this.mouseRight = function () {
+		if (html5.mouseButton &&
+			html5.mousePos[0] > 3*html5.canvas.width/4 &&
+			html5.mousePos[1] > html5.canvas.height/4 &&
+			html5.mousePos[1] < 3*html5.canvas.height/4)
+			return true;
+		return false;
+	}
+
+	this.mouseCenter = function () {
+		if (html5.mouseButton &&
+			html5.mousePos[0] > html5.canvas.width/4 &&
+			html5.mousePos[0] < 3*html5.canvas.width/4 &&
+			html5.mousePos[1] > html5.canvas.height/4 &&
+			html5.mousePos[1] < 3*html5.canvas.height/4)
+			return true;
+		return false;		
+	}
+
 	this.lastUpdate = jsEngine.pt;
 	this.lastBombUpdate = jsEngine.pt;
 
 	this.update = function (map) {
 		if (this.ix.complete(jsEngine.pt) &&
 			this.iy.complete(jsEngine.pt)) {
-			if (html5.keyboard[html5.keyUp]) {
+			if (html5.keyboard[html5.keyUp] || this.mouseUp()) {
 				this.move(map,this.x,this.y-1);
 				this.image = 1;
 			}
-			if (html5.keyboard[html5.keyDown]) {
+			if (html5.keyboard[html5.keyDown] || this.mouseDown()) {
 				this.move(map,this.x,this.y+1);
 				this.image = 0;
 			}
-			if (html5.keyboard[html5.keyLeft]) {
+			if (html5.keyboard[html5.keyLeft] || this.mouseLeft()) {
 				this.move(map,this.x-1,this.y);
 				this.image = 2;
 			}
-			if (html5.keyboard[html5.keyRight]) {
+			if (html5.keyboard[html5.keyRight] || this.mouseRight()) {
 				this.move(map,this.x+1,this.y);
 				this.image = 3;
 			}
@@ -481,7 +556,7 @@ function Player (x, y) {
 			this.lastUpdate = jsEngine.pt;
 		}
 
-		if (html5.keyboard[html5.keySpace])
+		if (html5.keyboard[html5.keySpace] || this.mouseCenter())
 			if (jsEngine.pt-this.lastBombUpdate > 0.2) {
 				map.data[this.y][this.x].push(new Bomb(this.x, this.y));
 				this.lastBombUpdate = jsEngine.pt;
@@ -501,7 +576,7 @@ function Player (x, y) {
 }
 
 // Comprimento, altura, tamanho dos tiles, descrição em uma array
-function TileMap (w,h,ts, mapData) {
+function TileMap (w,h,ts, mapData, mapName) {
 	this.sx = 0;
 	this.sy = 0;
 
@@ -510,7 +585,9 @@ function TileMap (w,h,ts, mapData) {
 	this.ts = ts;
 	this.data = [];
 
-	this.floorPattern = html5.context.createPattern (new Grass().image, "repeat");
+	this.floorPattern = html5.context.createPattern (new Floor().image, "repeat");
+
+	this.player = null;
 
 	this.render = function () {
 		this.sx = (html5.canvas.width-this.w*this.ts)/2+jsEngine.modules.particles.moveMap().x;
@@ -547,7 +624,7 @@ function TileMap (w,h,ts, mapData) {
 					}
 					if (!this.data[y][x][z].updated) {
 						this.data[y][x][z].updated = true;
-						this.data[y][x][z].update(this);
+						this.data[y][x][z].update(this, this.player);
 					}
 				}
 			}
@@ -589,8 +666,12 @@ function TileMap (w,h,ts, mapData) {
 				case 'X':
 					this.data[y][x].push(new Wall(x,y));
 				break;
+				case 'V':
+					this.data[y][x].push(new Glass(x,y));
+				break;
 				case '@':
-					this.data[y][x].push(new Player(x,y));
+					this.player = new Player(x,y);
+					this.data[y][x].push(this.player);
 				break;
 				case 'T':
 					this.data[y][x].push(new Tales(x,y));
@@ -601,6 +682,8 @@ function TileMap (w,h,ts, mapData) {
 			}
 		}
 	}
+
+	jsEngine.modules.messages.addMessage(new Message(mapName));
 }
 
 function MapManager () {

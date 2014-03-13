@@ -99,9 +99,19 @@ function Tales (x, y) {
 	}
 
 	this.calcNextPlayer = function (nextX,nextY, player) {
-		nextX = (nextX-player.x)>0?1:-1;
-		nextY = (nextY-player.y)>0?1:-1;
+		var dX = (nextX-player.x);
+		var dY = (nextY-player.y);
+		dX = dX>0?-1:dX<0?1:0;
+		dY = dY>0?-1:dY<0?1:0;
 	
+		if (Math.abs(dX) > 0)
+			this.image = dX>0?3:2;
+		if (Math.abs(dY) > 0)
+			this.image = dY>0?0:1;
+
+		nextX += dX;
+		nextY += dY;
+
 		return [nextX,nextY];
 	}
 
@@ -144,9 +154,32 @@ function Wall (x, y) {
 	this.x = x;
 	this.y = y;
 	this.type = "wall";
+	this.color = "rgb(255,128,64)";
 	this.image = html5.image("assets/images/wall/wall.png");
 
-	// Polimorfismo
+	// Herança
+	this.move = new DefaultObject().move;
+
+	this.update = function (map) {
+
+	} 
+
+	this.render = function (map) {
+		html5.context.drawImage (this.image,
+								map.sx+this.x*map.ts,
+								map.sy+this.y*map.ts);
+	}
+}
+
+// Tile da pia
+function Sink (x, y) {
+	this.x = x;
+	this.y = y;
+	this.type = "wall";
+	this.color = "rgb(255,255,255)";
+	this.image = html5.image("assets/images/objects/sink.png");
+
+	// Herança
 	this.move = new DefaultObject().move;
 
 	this.update = function (map) {
@@ -165,9 +198,32 @@ function Glass (x, y) {
 	this.x = x;
 	this.y = y;
 	this.type = "wall";
+	this.color = "rgb(0,200,255)";
 	this.image = html5.image("assets/images/wall/glass.png");
 
-	// Polimorfismo
+	// Herança
+	this.move = new DefaultObject().move;
+
+	this.update = function (map) {
+
+	} 
+
+	this.render = function (map) {
+		html5.context.drawImage (this.image,
+								map.sx+this.x*map.ts,
+								map.sy+this.y*map.ts);
+	}
+}
+
+// Tile de uma mesa
+function Table (x, y) {
+	this.x = x;
+	this.y = y;
+	this.type = "wall";
+	this.color = "rgb(0,210,0)";
+	this.image = html5.image("assets/images/objects/table.png");
+
+	// Herança
 	this.move = new DefaultObject().move;
 
 	this.update = function (map) {
@@ -188,7 +244,7 @@ function MetalWall (x, y) {
 	this.type = "metalwall";
 	this.image = html5.image("assets/images/wall/metal.png");
 
-	// Polimorfismo
+	// Herança
 	this.move = new DefaultObject().move;
 
 	this.update = function (map) {
@@ -209,7 +265,7 @@ function Floor (x, y) {
 	this.type = "floor";
 	this.image = html5.image("assets/images/floor/floor.png");
 
-	// Polimorfismo
+	// Herança
 	this.move = new DefaultObject().move;
 
 	this.update = function (map) {
@@ -227,7 +283,7 @@ function Grass (x, y) {
 	this.type = "floor";
 	this.image = html5.image("assets/images/floor/grass.png");
 
-	// Polimorfismo
+	// Herança
 	this.move = new DefaultObject().move;
 
 	this.update = function (map) {
@@ -245,7 +301,7 @@ function Bomb (x, y) {
 	this.type = "bomb";
 	this.image = html5.image("assets/images/bomb/bomb.png");
 
-	// Polimorfismo
+	// Herança
 	this.move = new DefaultObject().move;
 
 	this.startTime = jsEngine.pt;
@@ -261,10 +317,12 @@ function Bomb (x, y) {
 			html5.audio("assets/audio/explosion.wav").cloneNode(true).play();
 
 		this.explodeTile(map,this.x,this.y);
-		this.explodeTile(map,this.x+1,this.y);
-		this.explodeTile(map,this.x-1,this.y);
-		this.explodeTile(map,this.x,this.y+1);
-		this.explodeTile(map,this.x,this.y-1);
+		for (var d=1;d<2;d++) {
+			this.explodeTile(map,this.x+d,this.y);
+			this.explodeTile(map,this.x-d,this.y);
+			this.explodeTile(map,this.x,this.y+d);
+			this.explodeTile(map,this.x,this.y-d);
+		}
 	}
 
 	this.explodeTile = function (map, x, y) {
@@ -286,6 +344,13 @@ function Bomb (x, y) {
 						jsEngine.modules.combo.hit();
 					if (map.data[y][x][i].type == "tales") {
 						map.tales = null;
+					} else {
+						if (map.data[y][x][i].type == "wall") {
+							jsEngine.modules.particles.addSystem(new Explosion(map.sx+x*map.ts+map.ts/2,
+																	   map.sy+y*map.ts+map.ts/2,
+																	   map.data[y][x][i].color,20));
+							explode = false;
+						}
 					}
 					map.data[y][x].splice(i,1);
 					i--;
@@ -299,7 +364,7 @@ function Bomb (x, y) {
 			if (explode)
 				jsEngine.modules.particles.addSystem(new Explosion(map.sx+x*map.ts+map.ts/2,
 															   map.sy+y*map.ts+map.ts/2,
-															   "orange",20));
+															   "red",20));
 		}
 	}
 
@@ -323,7 +388,7 @@ function Frog (x, y) {
 					[jsEngine.pt,jsEngine.pt],
 					[this.y,this.y]);
 
-	// Polimorfismo
+	// Herança
 	this.move = new DefaultObject().move;
 
 	this.lastUpdateTime = jsEngine.pt;
@@ -589,7 +654,42 @@ function TileMap (w,h,ts, mapData, mapName) {
 
 	this.player = null;
 
+	this.startTime = null;
+	this.messageNumber = 0;
+
 	this.render = function () {
+		if (jsEngine.pt-this.startTime < 1) {
+			return;
+		} else
+		if (jsEngine.pt-this.startTime < 2) {
+			if (this.messageNumber < 1) {
+				this.messageNumber++;
+				jsEngine.modules.messages.addMessage(new Message("3..."));
+			}
+			return;
+		} else
+		if (jsEngine.pt-this.startTime < 3) {
+			if (this.messageNumber < 2) {
+				this.messageNumber++;
+				jsEngine.modules.messages.addMessage(new Message("2..."));
+			}
+			return;
+		} else
+		if (jsEngine.pt-this.startTime < 4) {
+			if (this.messageNumber < 3) {
+				this.messageNumber++;
+				jsEngine.modules.messages.addMessage(new Message("1..."));
+			}
+			return;
+		} else
+		if (jsEngine.pt-this.startTime < 5) {
+			if (this.messageNumber < 4) {
+				this.messageNumber++;
+				jsEngine.modules.messages.addMessage(new Message("Go! Go! Go!"));
+			}
+			return;
+		} else {}
+
 		this.sx = (html5.canvas.width-this.w*this.ts)/2+jsEngine.modules.particles.moveMap().x;
 		this.sy = (html5.canvas.height-this.h*this.ts)/2+jsEngine.modules.particles.moveMap().y;
 
@@ -602,7 +702,7 @@ function TileMap (w,h,ts, mapData, mapName) {
 			}
 		}
 
-		var layers = [[],[],[],[]];
+		var layers = [[],[],[],[],[]];
 
 		// Chama o update de todos os objetos
 		for (var y=0;y<h;y++) {
@@ -611,13 +711,16 @@ function TileMap (w,h,ts, mapData, mapName) {
 					var object = this.data[y][x][z];
 					switch (this.data[y][x][z].type) {
 						case "player":
-							layers[3].push(object);
+							layers[4].push(object);
 						break;
 						case "tales":
-							layers[2].push(object);
+							layers[3].push(object);
 						break;
 						case "bomb":
 							layers[2].push(object);
+						break;
+						case "wall":
+							layers[1].push(object);
 						break;
 						default:
 							layers[0].push(object);
@@ -628,6 +731,10 @@ function TileMap (w,h,ts, mapData, mapName) {
 					}
 				}
 			}
+		}
+
+		if (layers[1].length == 0 && layers[3].length == 0) {
+			jsEngine.modules.map.nextMap();
 		}
 
 		html5.context.fillStyle = this.floorPattern;
@@ -641,6 +748,10 @@ function TileMap (w,h,ts, mapData, mapName) {
 				layers[l][o].render(this);
 			}
 		}
+	}
+
+	this.start = function () {
+		this.startTime = jsEngine.pt;
 	}
 
 	this.isInside = function (x, y) {
@@ -676,6 +787,12 @@ function TileMap (w,h,ts, mapData, mapName) {
 				case 'T':
 					this.data[y][x].push(new Tales(x,y));
 				break;
+				case 'M':
+					this.data[y][x].push(new Table(x,y));
+				break;
+				case 'P':
+					this.data[y][x].push(new Sink(x,y));
+				break;
 				case '#':
 					this.data[y][x].push(new MetalWall(x,y));
 				break;
@@ -683,7 +800,7 @@ function TileMap (w,h,ts, mapData, mapName) {
 		}
 	}
 
-	jsEngine.modules.messages.addMessage(new Message(mapName));
+	this.name = mapName;
 }
 
 function MapManager () {
@@ -695,6 +812,12 @@ function MapManager () {
 
 	this.currentMapName = null;
 	this.maps = [];
+	this.sequence = [];
+	this.mapNumber = 0;
+
+	this.setSequence = function (sequence) {
+		this.sequence = sequence;
+	}
 
 	this.addMap = function (name, map) {
 		this.maps[name] = map;
@@ -706,6 +829,22 @@ function MapManager () {
 		this.currentMapName = name;
 	}
 
+	this.nextMap = function () {
+		if (this.mapNumber < this.sequence.length) {	
+			jsEngine.modules.particles.reset();
+			this.currentMapName = this.sequence[this.mapNumber++];
+			jsEngine.modules.messages.addMessage(new Message(this.maps[this.currentMapName].name));
+			this.maps[this.currentMapName].start();
+		} else {
+			jsEngine.modules.particles.reset();
+			jsEngine.modules.hud.reset();
+			var gameRenderer = new scnFinal.renderer();
+			gameRenderer.scene = new scnFinal.scene();
+
+			jsEngine.modules.render.renderer = gameRenderer;
+		}
+	}
+
 	this.render = function () {
 		if (this.maps[this.currentMapName])
 			this.maps[this.currentMapName].render();
@@ -714,5 +853,6 @@ function MapManager () {
 	this.reset = function () {
 		this.maps = [];
 		this.currentMapName = null;
+		this.mapNumber = 0;
 	}
 }

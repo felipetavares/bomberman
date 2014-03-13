@@ -54,6 +54,7 @@ var scnIntro = {
 		this.textColor = [0,0,0];
 		this.textTime = 5;
 		this.texts = [
+			"Bazinga Five:",
 			"Felipe Tavares",
 			"Gabriel Araújo",
 			"Camila Medeiros",
@@ -61,7 +62,7 @@ var scnIntro = {
 			"Ana Cecília",
 			"apresentam",
 			"El Aluno",
-			"um jogo de Rayslla Almeida",
+			"Um jogo de Rayslla Almeida",
 		];
 	},
 
@@ -70,6 +71,8 @@ var scnIntro = {
 		this.fontSize = 60;
 
 		this.startTime = jsEngine.pt;
+
+		html5.enableInput();
 
 		this.calcFontSize = function (text, desired) {
 			html5.context.font = Math.floor(this.fontSize)+"px sans-serif";
@@ -131,18 +134,18 @@ var scnCutscene = {
 		this.textColor = "white";
 		this.textTime = 5;
 		this.dialog = [
-			"Porra bixo!/ Roubaram minha calça!/ Agora aquele /-ogro-/",
-			" /o Tales/ vai querer me prender por causa disso./ Vou de fininho para ele não me ver./",
+			"Porra bixo!/ Roubaram minha calça!/ Agora aquele -ogro-",
+			"do Tales vai querer me prender por causa disso./ Vou de fininho para ele não me ver./",
 			"#",
-			"Ei!/ Pequena criatura, porquê não estás com",
-			"as vestimentas de acordo com os padrões exigidos",
+			"Ei!/ Pequena criatura, por que não estás com ",
+			"as vestimentas de acordo com os padrões exigidos ",
 			"pelo colégio?/",
 			"Esta é uma instituição de respeito!/",
 			"#",
 			"Roubaram minhas calças, Tales!/",
 			"#",
 			"Nossa!/",
-			"Vai dizer agora que um animal quadrúpede por nome de cão../",
+			"Vai dizer agora que um animal quadrúpede por nome de cão /",
 			".. alimentou-se do teu trabalho de casa?/",
 			"Que desculpa mais anciã!/",
 			"Vou te levar para a diretoria!/",
@@ -150,13 +153,13 @@ var scnCutscene = {
 			"Não!/ Eu vim de landres!/ Se mexer comigo, o bixo pega!/",
 			"Tenho um carregamento explosivo aqui!/",
 			"#",
-			"Jovem aluno n00b.../ tenho em minhas mãos um carregamento novo de/",
-			"- projetos de príncipe explosivos -/",
+			"Jovem aluno n00b.../ tenho em minhas mãos um carregamento novo de ",
+			"projetos de príncipe explosivos/",
 			"Vamos para a diretoria!/",
 			"#",
 			"Venha me pegar se for capaz!/",
 			"#",
-			"Muahaha!/ Não se preucupe quanto a isso!/ Irei!/",
+			"Muahaha!/ Não se preocupe quanto a isso!/ Irei!/",
 		];
 		this.facesA = [
 			html5.image("assets/images/cutscene/boy0.png"),
@@ -201,6 +204,9 @@ var scnCutscene = {
 		this.positionAtDialog = 0;
 		this.dialogNumber = 0;
 		this.target = 0;
+
+		this.timeout = null;
+
 		this.addChar = function () {
 			if (this.target == 1) {
 				if (this.text[this.target].length%2 == 0) {
@@ -221,10 +227,9 @@ var scnCutscene = {
 			}
 
 			if (this.dialogNumber >= this.scene.dialog.length) {
-				var nextRenderer = new scnBomberman.renderer();
-				nextRenderer.scene = new scnBomberman.scene();
+				var nextRenderer = new scnTutorial.renderer();
+				nextRenderer.scene = new scnTutorial.scene();
 				jsEngine.modules.render.renderer = nextRenderer;
-				jsEngine.modules.ui.show(GameMenu);
 				return;
 			}
 
@@ -235,17 +240,17 @@ var scnCutscene = {
 			var c = this.scene.dialog[this.dialogNumber].charAt(this.positionAtDialog++);
 
 			if (c == '/') {
-				setTimeout (html5.hitch(this.addChar,this), 500);
+				this.timeout = setTimeout (html5.hitch(this.addChar,this), 500);
 			} else if (c == '#') {
 				if (this.target == 0)
 					this.target = 1;
 				else
 					this.target = 0;
-				setTimeout (html5.hitch(this.addChar,this), 80);
+				this.timeout = setTimeout (html5.hitch(this.addChar,this), 80);
 			}
 			else {
 				this.text[this.target] += c;
-				setTimeout (html5.hitch(this.addChar,this), 80);
+				this.timeout = setTimeout (html5.hitch(this.addChar,this), 80);
 			}
 		}
 
@@ -284,9 +289,18 @@ var scnCutscene = {
 											 0,0);
 				html5.context.restore();
 			}
+
+			html5.context.fillText ("Aperte espaço para pular a introdução", html5.canvas.width/2, html5.canvas.height-26);
+
+			if (html5.keyboard[html5.keySpace]) {
+				var nextRenderer = new scnTutorial.renderer();
+				nextRenderer.scene = new scnTutorial.scene();
+				jsEngine.modules.render.renderer = nextRenderer;
+				clearTimeout (this.timeout);
+			}
 		}
 
-		setTimeout (html5.hitch(this.addChar,this), 0);
+		this.timeout = setTimeout (html5.hitch(this.addChar,this), 0);
 	}
 }
 
@@ -341,6 +355,179 @@ scnBomberman = {
 			this.renderClouds();
 
 			jsEngine.modules.map.render();
+		}
+	}
+}
+
+scnTutorial = {
+	"scene": function () {
+		this.backgroundColor = "ligthblue";
+		this.textColor = "#f0e0c0";
+		this.keyUp = html5.image("assets/images/tutorial/up.png");
+		this.keyDown = html5.image("assets/images/tutorial/down.png");
+		this.keyLeft = html5.image("assets/images/tutorial/left.png");
+		this.keyRight = html5.image("assets/images/tutorial/right.png");
+		this.keySpace = html5.image("assets/images/tutorial/space.png");
+		this.player = html5.image("assets/images/player/front.png");
+		this.tales = html5.image("assets/images/tales/front.png");
+		this.wall = html5.image("assets/images/wall/wall.png");
+		this.glass = html5.image("assets/images/wall/glass.png");
+		this.table = html5.image("assets/images/objects/table.png");
+		this.sink = html5.image("assets/images/objects/sink.png");
+		this.bomb = html5.image("assets/images/bomb/bomb.png");
+		this.frog = html5.image("assets/images/tales/frog.png");
+	},
+
+	"renderer": function () {
+		this.scene = null;
+
+		this.state = 0;
+
+		html5.enableInput();
+
+		this.drawImage = function (img, ix, iy) {
+			var x = (html5.canvas.width-img.width)/2+ix;
+			var y = (html5.canvas.height-img.height)/2+iy;
+		
+			html5.context.drawImage (img,x,y);
+		}
+
+		this.render = function () {
+			$("#html_canvas").css("background","#ffb090");
+			html5.context.clearRect (0,0,html5.canvas.width,html5.canvas.height);
+
+			html5.context.fillStyle = this.scene.textColor;
+			html5.context.textAlign = "center";
+			html5.context.textBaseline = "middle";
+			html5.context.font = 16+"px sans-serif";
+			
+			if (this.state == 0) {
+				html5.context.fillText ("para mover o personagem para cima", html5.canvas.width/2,html5.canvas.height/2+100);
+				this.drawImage (this.scene.keyUp,0,-Math.cos(jsEngine.pt*20)*10);
+				if (html5.keyboard[html5.keyUp])
+					this.state = 1;
+			} else
+			if (this.state == 1) {
+				html5.context.fillText ("para mover o personagem para baixo", html5.canvas.width/2,html5.canvas.height/2+100);
+				this.drawImage (this.scene.keyDown,0,-Math.cos(jsEngine.pt*20)*10);
+				if (html5.keyboard[html5.keyDown])
+					this.state = 2;
+			} else
+			if (this.state == 2) {
+				html5.context.fillText ("para mover o personagem para a esquerda", html5.canvas.width/2,html5.canvas.height/2+100);
+				this.drawImage (this.scene.keyLeft,0,-Math.cos(jsEngine.pt*20)*10);
+				if (html5.keyboard[html5.keyLeft])
+					this.state = 3;
+			} else
+			if (this.state == 3) {
+				html5.context.fillText ("para mover o personagem para a direita", html5.canvas.width/2,html5.canvas.height/2+100);
+				this.drawImage (this.scene.keyRight,0,-Math.cos(jsEngine.pt*20)*10);
+				if (html5.keyboard[html5.keyRight])
+					this.state = 4;
+			} else
+			if (this.state == 4) {
+				html5.context.fillText ("para colocar bombas", html5.canvas.width/2,html5.canvas.height/2+100);
+				this.drawImage (this.scene.keySpace,0,-Math.cos(jsEngine.pt*20)*10);
+				if (html5.keyboard[html5.keySpace]) {
+					html5.keyboard[html5.keySpace] = false;
+					this.state = 5;
+				}
+			} else
+			if (this.state == 5) {
+				this.drawImage (this.scene.player,0,-Math.cos(jsEngine.pt*5)*10);				
+				html5.context.fillText ("controle este: (espaço continua)", html5.canvas.width/2,html5.canvas.height/2-100);
+				if (html5.keyboard[html5.keySpace]) {
+					html5.keyboard[html5.keySpace] = false;
+					this.state = 6;
+				}
+			} else
+			if (this.state == 6) {
+				this.drawImage (this.scene.table,-64-8,-Math.cos(jsEngine.pt*5)*10);				
+				this.drawImage (this.scene.wall,-32-4,-Math.cos(jsEngine.pt*5)*10);				
+				this.drawImage (this.scene.tales,0,-Math.cos(jsEngine.pt*5)*10);				
+				this.drawImage (this.scene.sink,32+4,-Math.cos(jsEngine.pt*5)*10);				
+				this.drawImage (this.scene.glass,64+8,-Math.cos(jsEngine.pt*5)*10);				
+				html5.context.fillText ("destrua estes: (espaço continua)", html5.canvas.width/2,html5.canvas.height/2-100);
+				if (html5.keyboard[html5.keySpace]) {
+					html5.keyboard[html5.keySpace] = false;
+					this.state = 7;
+				}
+			} else
+			if (this.state == 7) {
+				this.drawImage (this.scene.bomb,0,-Math.cos(jsEngine.pt*5)*10);				
+				html5.context.fillText ("exploda com estes: (espaço continua)", html5.canvas.width/2,html5.canvas.height/2-100);
+				if (html5.keyboard[html5.keySpace]) {
+					html5.keyboard[html5.keySpace] = false;
+					this.state = 8;
+				}
+			} else
+			if (this.state == 8) {
+				this.drawImage (this.scene.frog,0,-Math.cos(jsEngine.pt*5)*10);				
+				html5.context.fillText ("fuja destes: (espaço continua)", html5.canvas.width/2,html5.canvas.height/2-100);
+				if (html5.keyboard[html5.keySpace]) {
+					html5.keyboard[html5.keySpace] = false;
+					this.state = 9;
+				}
+			} else
+			if (this.state == 9) {
+				html5.context.fillText ("para repetir", html5.canvas.width/2-100,html5.canvas.height/2+100);
+				html5.context.fillText ("para continuar", html5.canvas.width/2+100,html5.canvas.height/2+100);
+				this.drawImage (this.scene.keyLeft,-100,-Math.cos(jsEngine.pt*20)*10);
+				this.drawImage (this.scene.keyRight,+100,-Math.cos(jsEngine.pt*20)*10);
+				if (html5.keyboard[html5.keyLeft])
+					this.state = 0;
+				if (html5.keyboard[html5.keyRight])
+					this.state = 10;
+			} else {
+				var nextRenderer = new scnBomberman.renderer();
+				nextRenderer.scene = new scnBomberman.scene();
+				jsEngine.modules.render.renderer = nextRenderer;
+				jsEngine.modules.ui.show(GameMenu);
+			}
+		}
+	}
+}
+
+scnFinal = {
+	"scene": function () {
+		this.backgroundColor = "ligthblue";
+		this.textColor = "#f0e0c0";
+		this.bazinga = html5.image("assets/images/bazinga.logo.png");
+		this.keySpace = html5.image("assets/images/tutorial/space.png");
+	},
+
+	"renderer": function () {
+		this.scene = null;
+
+		html5.enableInput();
+
+		this.drawImage = function (img, ix, iy) {
+			var x = (html5.canvas.width-img.width)/2+ix;
+			var y = (html5.canvas.height-img.height)/2+iy;
+		
+			html5.context.drawImage (img,x,y);
+		}
+
+		this.render = function () {
+			$("#html_canvas").css("background","#ffb090");
+			html5.context.clearRect (0,0,html5.canvas.width,html5.canvas.height);
+
+			html5.context.fillStyle = this.scene.textColor;
+			html5.context.textAlign = "center";
+			html5.context.textBaseline = "middle";
+			html5.context.font = 16+"px sans-serif";
+
+			this.drawImage (this.scene.bazinga,0,-Math.cos(jsEngine.pt)*100);
+			html5.context.fillText ("Special thanks to Steve Jobs, by making HTML5 a viable technology.", html5.canvas.width/2,html5.canvas.height/2+218-Math.cos(jsEngine.pt)*100);
+			html5.context.fillText ("para jogar novamente", html5.canvas.width/2,html5.canvas.height/2+200-Math.cos(jsEngine.pt)*100);
+			this.drawImage (this.scene.keySpace,0,-Math.cos(jsEngine.pt*20)*10-Math.cos(jsEngine.pt)*100+150);
+
+			if (html5.keyboard[html5.keySpace]) {
+				var nextRenderer = new scnBomberman.renderer();
+				nextRenderer.scene = new scnBomberman.scene();
+				jsEngine.modules.render.renderer = nextRenderer;
+				jsEngine.modules.ui.show(GameMenu);
+			}
 		}
 	}
 }

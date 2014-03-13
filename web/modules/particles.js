@@ -26,10 +26,10 @@ function Particle (x, y, color) {
 	}
 
 	//@construct
-	this.vx = (Math.random()-0.5)*400;
-	this.vy = (Math.random()-0.5)*400;
+	this.vx = (Math.random()-0.5)*100/3;
+	this.vy = (Math.random()-0.5)*100/3;
 
-	this.life = Math.random();
+	this.life = Math.random()*0.5+0.5;
 }
 
 function Explosion (x, y, color, number) {
@@ -84,6 +84,10 @@ function ParticleManager () {
 				s--;
 			}
 		}
+	}
+
+	this.reset = function () {
+		this.systems = [];
 	}
 
 	this.moveMap = function () {

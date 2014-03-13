@@ -24,7 +24,10 @@ function html5 () {
     this.listenerUp = null;
     this.listenerDown = null;
 
+    this.enabled = false;
+
     this.enableInput = function () {
+    	this.enabled = true;
     	this.listenerDown = this.hitch(this.onDownEvent,this);
  	    this.listenerUp = this.hitch(this.onUpEvent,this);
  	    window.addEventListener('keydown',this.listenerDown,false);
@@ -37,6 +40,11 @@ function html5 () {
     }
 
     this.disableInput = function () {
+    	this.enabled = false;
+	    var k;
+	    for (k in this.keyboard) {
+	    	this.keyboard[k] = false;
+	    }
  	    window.removeEventListener('keydown',this.listenerDown,false);
 	    window.removeEventListener('keyup',this.listenerUp,false);
     }
@@ -92,14 +100,20 @@ function html5 () {
     }
 
     this.onDownEvent = function (evt) {
-	evt.preventDefault();
-    glb = evt;
-	this.keyboard[evt.keyCode] = true;
+    	if (this.enabled) {
+		    if (evt.keyCode != 122 &&
+		    	evt.keyCode != 116)
+				evt.preventDefault();
+		    glb = evt;
+			this.keyboard[evt.keyCode] = true;
+    	}
     }
 
     this.onUpEvent = function (evt) {
-	evt.preventDefault();
-	this.keyboard[evt.keyCode] = false;
+    	if (this.enabled) {
+			evt.preventDefault();
+			this.keyboard[evt.keyCode] = false;
+		}
     }
 
     this.get = function (url) {
